@@ -1,6 +1,7 @@
 <template>
   <!-- 发现页面 -->
   <div class="find">
+    <TabBar></TabBar>
     <h2>发现</h2>
     <p>生活服务</p>
     <hr />
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import TabBar from '../components/dyc/TabBar'
 // document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
 export default {
   name: "findkeping",
@@ -79,6 +81,9 @@ export default {
           break;
       }
     }
+  },
+  components:{
+    TabBar
   }
 };
 </script>

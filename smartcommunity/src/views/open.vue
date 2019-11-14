@@ -1,5 +1,6 @@
 <template>
   <div class="open">
+    <TabBar></TabBar>
     <div class="head">
       <!-- 头部返回键 -->
       <i @click="prev">
@@ -37,6 +38,7 @@
   </div>
 </template>
 <script>
+import TabBar from '../components/dyc/TabBar'
 export default {
   // data: {
   //   selected: "APP-进",
@@ -82,6 +84,9 @@ export default {
       ":" +
       aData.getSeconds();
     console.log(this.value); //2019/11/12　21:59:48
+  },
+  components:{
+    TabBar
   }
 };
 </script>
