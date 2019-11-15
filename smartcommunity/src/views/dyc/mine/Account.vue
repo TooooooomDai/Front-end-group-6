@@ -5,7 +5,7 @@
       <li>
         <span class="type">头像</span>
         <span class="messages">
-          <span class="portrait"></span>
+          <div class="portrait"><img src="3.jpg" style="width:24px;height:24px;display:inline-block"  alt=""></div>
         </span>
       </li>
       <li>
@@ -42,7 +42,7 @@
           <input v-model="sex" value="女" type="radio" name="sex" id />
         </span>
       </li>
-      <li style="border:0;">
+      <li>
         <span class="type" >手机号</span>
         <span class="messages" style="color:#ccc">
           {{phonenumer}}
@@ -90,12 +90,12 @@ input {
 }
 .content {
   position: absolute;
-  top: 99px;
+  top: calc(1rem + 20px);
   width: 100%;
 }
 .content li {
   width: calc(100% - 50px);
-  border-bottom: 2px solid #ccc;
+  border-top: 2px solid #ccc;
   padding: 0 30px 0 20px;
   height: 40px;
   line-height: 40px;
