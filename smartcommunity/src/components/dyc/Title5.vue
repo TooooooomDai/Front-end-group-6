@@ -29,10 +29,10 @@ export default {
 </script>
 <style scoped>
 .title {
-  height: 99px;
+   height: 1rem;
   width: 100%;
-  background: #aaa;
-  color: #fff;
+  background: #fff;
+  /* color: #fff; */
   position: absolute;
   top: 0;
   text-align: center;

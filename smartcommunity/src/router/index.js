@@ -24,13 +24,13 @@ import record from '../views/record.vue'
 import find from '../views/find.vue'
 
 
-
+import store from '../store'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('../views/loginAndRegister/Login.vue'),
     // children: [
@@ -402,10 +402,37 @@ const routes = [
 
 ]
 
+
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
+router.beforeEach((to, from, next) => {
+  // console.log(store);
+  if(store.state.guardflag){
+    if(from.name===null&&to.name==='login'){
+      next();
+    }else if(from.name==='login'&&to.name==='register'){
+      next();
+    }else if(to.name==='login'&&from.name==='register'){
+      next();
+    }else if(from.name==='login'&&to.name==='forgetpsw1'){
+      next();
+    }else if(to.name==='login'&&from.name==='forgetpsw1'){
+      next();
+    }else if(from.name==='forgetpsw1'&&to.name==='forgetpsw2'){
+      next();
+    }else if(to.name==='forgetpsw1'&&from.name==='forgetpsw2'){
+      next();
+    }else{
+      next('/')
+    }
+  }else{
+    next();
+  }
 
+
+})
 export default router

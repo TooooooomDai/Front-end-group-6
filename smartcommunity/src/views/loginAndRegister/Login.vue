@@ -4,7 +4,7 @@
     <div class="kong"></div>
     <div class="writein">
       <span class="iconfont icon-zhanghu icon"></span>
-      <input type="text" id="login" placeholder="请输入您的用户名或手机号" />
+      <input type="text" id="login" placeholder="请输入您的用户名或手机号" ref= "user"/>
     </div>
     <div class="writein">
       <span class="iconfont icon-kaisuo icon"></span>
@@ -14,9 +14,10 @@
     </div>
     <p class="wrong" v-show="show">请输入八位字母加数字的有效密码</p>
     <div class="operationpassword">
-      <input type="checkbox" id="rember" v-model="checked"/> 记住密码
-      <router-link to="/forgetpsw1"><span class="forget">忘记密码</span></router-link>
-      
+      <input type="checkbox" id="rember" v-model="checked" /> 记住密码
+      <router-link to="/forgetpsw1">
+        <span class="forget">忘记密码</span>
+      </router-link>
     </div>
     <button @click="loginin">登录</button>
     <div id="foot">
@@ -36,10 +37,10 @@ export default {
   data() {
     return {
       show: false,
-      showshouji:false,
+      showshouji: false,
       pswType: "password",
       eye: true,
-      checked:false
+      checked: false
     };
   },
   methods: {
@@ -50,29 +51,30 @@ export default {
       if (shuzi.test(userpsw) && zimu.test(userpsw) && userpsw.length >= 8)
         this.show = false;
       else this.show = true;
-    },
-    
+    },  
     changeType() {
       this.pswType = this.pswType === "password" ? "text" : "password";
       this.eye = !this.eye;
     },
     loginin() {
-      let user={
-        username:this.$refs.user.value,
-        password:this.$refs.psw.value
-      }
-      console.log(user)
-      if(this.checked==true){
+      let user = {
+        username: this.$refs.user.value,
+        password: this.$refs.psw.value
+      };
+      this.checked = true; 
+      console.log(user);
+      if (this.checked) {
         console.log(1);
-        document.cookie=`user={username=${user.username},password=${user.password}}`
+        document.cookie = `user={username=${user.username},password=${user.password}}`;
+        this.$store.state.guardflag = false;
+        this.$router.push({ path: "/community" });
         // document.cookie='username='+user.username+';expires='+ 10;
         // document.cookie='password='+user.password+';expires='+ 10;
-      }else{
-        document.cookie=`user=${''}`
+      } else {
+        document.cookie = `user=${""}`;
         // document.cookie='username='+user.username+';expires='+ -1;
 
         // document.cookie="user" + "=" + user + ";expires=" + 10;
-
       }
       // axios.post("/add_student", user)
       //   .then(function(result) {
@@ -81,7 +83,7 @@ export default {
       //   .catch(function(err) {
       //     console.log(err);
       //   });
-    },
+    }
     // clearCookie: function() {
     //             this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
     //         }

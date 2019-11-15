@@ -20,7 +20,8 @@ export default new Vuex.Store({
     list:'',
     loudongnum:'',
     danyuan:'',
-    fangwu:''
+    fangwu:'',
+    guardflag:true
   },
   mutations: {
     sendname(state,people){
