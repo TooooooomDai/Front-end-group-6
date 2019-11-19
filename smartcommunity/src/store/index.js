@@ -18,10 +18,20 @@ export default new Vuex.Store({
     peopleid:'',
 
     //login
-    list:'',
-    loudongnum:'',
-    danyuan:'',
-    fangwu:''
+    identity:'',//身份
+    list:'',//片区
+    loudongnum:'',//楼栋
+    danyuan:'',//单元
+    fangwu:'',//房屋号
+    phone:'',//手机号
+    password:'',//密码
+    beginTime:'',//合同开始时间
+    endTime:'',//合同结束时间
+    username:'',//用户名
+    xingming:'',//姓名
+    sex:'',//性别
+    idCard:'',//身份证号
+    nation:''//民族
   },
   mutations: {
     // zc部分
@@ -37,6 +47,9 @@ export default new Vuex.Store({
 
 
     //login
+    identitychoose(state,identity){
+      state.identity=identity;
+    },
     pianquid(state,list){
       state.list=list
     },
@@ -47,8 +60,36 @@ export default new Vuex.Store({
       state.danyuan=danyuan
     },
     fangwuid(state,fangwu){
-      state.fangwu=fangwu
+      state.fangwu=fangwu;
+    },
+    phonenumber(state,phone){
+      state.phone=phone;
+    },
+    getPassword(state,password){
+      state.password=password;
+    },
+    getBegin(state,begintime){
+      state.beginTime=begintime;
+    },
+    getEnd(state,endTime){
+      state.endTime=endTime;
+    },
+    getUsername(state,username){
+      state.username=username;
+    },
+    getXingming(state,xingming){
+      state.xingming=xingming;
+    },
+    getSex(state,sex){
+      state.sex=sex;
+    },
+    getIdcard(state,idCard){
+      state.idCard=idCard;
+    },
+    getNation(state,nation){
+      state.nation=nation;
     }
+
   },
   actions: {
     sendname(context,people){
@@ -61,7 +102,10 @@ export default new Vuex.Store({
     
 
 
-    // kj部分
+
+    identitychoose(context,identity){
+      context.commit('identitychoose',identity)
+    },
     pianquid(context,list){
       context.commit('pianquid',list)
     },
@@ -73,9 +117,34 @@ export default new Vuex.Store({
     },
     fangwuid(context,fangwu){
       context.commit('fangwuid',fangwu)
+    },
+    phonenumber(context,phone){
+      context.commit('phonenumber',phone)
+    },
+    getPassword(context,password){
+      context.commit('getPassword',password)
+    },
+    getBegin(context,begintime){
+      context.commit('getBegin',begintime)
+    },
+    getEnd(context,endTime){
+      context.commit('getEnd',endTime)
+    },
+    getUsername(context,username){
+      context.commit('getUsername',username)
+    },
+    getXingming(context,xingming){
+      context.commit('getXingming',xingming)
+    },
+    getSex(context,sex){
+      context.commit('getSex',sex)
+    },
+    getIdcard(context,idCard){
+      context.commit('getIdcard',idCard)
+    },
+    getNation(context,nation){
+      context.commit('getNation',nation)
     }
-
-    
   },
   modules: {
     myhouse,

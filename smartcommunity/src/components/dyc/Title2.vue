@@ -11,9 +11,9 @@ export default {
   props: ["title"],
   methods: {
     back() {
-      console.log('被触发了');
+      console.log("被触发了");
       this.$router.go(-1);
-    },
+    }
   },
   mounted() {
     // console.log('我被创建了');
@@ -22,10 +22,10 @@ export default {
 </script>
 <style scoped>
 .title {
-  height: 99px;
+  height: 1rem;
   width: 100%;
-  background: #aaa;
-  color: #fff;
+  background: #fff;
+  /* color: #fff; */
   position: absolute;
   top: 0;
   text-align: center;

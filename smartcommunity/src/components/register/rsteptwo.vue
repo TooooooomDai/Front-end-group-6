@@ -1,10 +1,11 @@
 <template>
   <div id="wrap">
     
+    <keep-alive>
     <div id="content">
       <div>
         <span class="iconfont icon-zhanghu"></span>
-        <input v-on:blur="shouji" ref="phone" type="text" id="phone" placeholder="请输入您的手机号" />
+        <input v-on:blur="shouji" ref="phone" type="text" id="phone" maxlength="11" placeholder="请输入您的手机号" />
       </div>
       <p class="wrong" v-show="showshouji">请输入正确的手机号</p>
 
@@ -31,6 +32,7 @@
       </div>
       <p class="wrong" v-show="showyzm">请输入正确的验证码</p>
     </div>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -54,6 +56,7 @@ export default {
       if (shoujireg.test(phone)) {
         this.showshouji = false;
         this.lock1 = true;
+        this.$store.dispatch('phonenumber',phone);
       } else {
         this.showshouji = true;
         this.lock1 = false;
@@ -78,6 +81,7 @@ export default {
       if (userpsw1 === userpsw2) {
         this.show2 = false;
         this.pswlock = true;
+        this.$store.dispatch('getPassword',userpsw1)
       } else this.show2 = true;
     },
     yzm() {

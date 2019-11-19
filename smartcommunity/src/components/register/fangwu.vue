@@ -10,13 +10,12 @@ export default {
   data() {
     
     return {
-        lists: ["1", "2", "3"],
+        lists: ["101", "102", "201","202","301","302","401","402","501","502","601","602","701","702","801","802","901","902","1001","1002","1101","1102"],
         isactive:'',
     };
   },
   methods: {
     send(fangwu) {
-      console.log(fangwu);
       this.isactive=fangwu;
       this.$store.dispatch('fangwuid',fangwu);
 
@@ -29,11 +28,11 @@ export default {
 </script>
 <style scoped>
 ul {
-
-  height: 3rem;
+  overflow: auto;
+  height: 3.5rem;
   box-sizing: border-box;
   border: 1px solid #999;
-  width: 100%;
+  width: 99.9%;
   background: white;
   position: fixed;
   bottom: 0;

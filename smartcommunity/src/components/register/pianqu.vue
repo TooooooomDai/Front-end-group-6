@@ -9,7 +9,7 @@
 export default {
   data() {
     return {
-      lists: ["kj", "lk", "po"],
+      lists: ["东区", "南区", "西区","北区"],
       isactive:'',
     };
   },
@@ -17,7 +17,6 @@ export default {
     send(list) {
       // console.log(this.$refs.msg.style);
       this.isactive=list;
-      console.log(list);
       this.$store.dispatch("pianquid", list);
       // localStorage.setItem("pianquchoose", list);
 
@@ -30,10 +29,10 @@ export default {
 <style scoped>
 ul {
   margin-top: 0.5rem;
-  height: 3rem;
+  height: 3.5rem;
   box-sizing: border-box;
   border: 1px solid #999;
-  width: 100%;
+  width: 99.9%;
   background: white;
   position: fixed;
   bottom: 0;

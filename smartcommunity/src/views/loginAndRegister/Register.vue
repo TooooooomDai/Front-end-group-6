@@ -19,6 +19,8 @@ import rsteptwo from "../../components/register/rsteptwo";
 import rstepthree from "../../components/register/rstepthree";
 import rstepfour from "../../components/register/rstepfour";
 import rstepfive from "../../components/register/rstepfive";
+import qs from "qs";
+import axios from "axios";
 
 document.documentElement.style.fontSize =
   (document.body.clientWidth * 50) / 375 + "px";
@@ -32,7 +34,11 @@ export default {
       show3: false,
       show4: false,
       show5: false,
-      lock: true
+      lock_1: true,
+      lock_2: true,
+      lock_3: true,
+      lock_4: true,
+      lock: false
     };
   },
   components: {
@@ -76,35 +82,143 @@ export default {
       }
     },
     next() {
+      // if((this.$store.state.identity&&this.$store.state.loudongnum&&this.$store.state.danyuan&&this.$store.state.fangwu)||registerLock){
+      //   console.log('可跳转')
+
+      // }
+      let lock1 =
+        this.$store.state.identity &&
+        this.$store.state.loudongnum &&
+        this.$store.state.danyuan &&
+        this.$store.state.fangwu;
+      let lock2 = this.$store.state.phone && this.$store.state.password;
+      let lock3 = this.$store.state.beginTime && this.$store.state.endTime;
+      let lock4 =
+        this.$store.state.username &&
+        this.$store.state.xingming &&
+        this.$store.state.sex &&
+        this.$store.state.idCard &&
+        this.$store.state.nation;
+
+      // console.log(this.$store.state.beginTime )
+      // console.log(this.$store.state.endTime )
+      //       if (lock1 && !lock2) {
+      //         this.count++;
+      //         this.show1 = false;
+      //         this.show2 = true;
+      //         this.$refs.title.innerHTML = "完善信息";
+      //       }
+      //       else if (lock2 && !lock3) {this.count++;
+      //         this.show2 = false;
+      //         this.show3 = true;
+      //       }
+      //       else if (lock3 && !lock4) {this.count++;
+      //       console.log(1)
+      //         this.show3 = false;
+      //         this.show4 = true;
+      //       }
+      //       else if (lock4) {this.count++;
+      //         this.show4 = false;
+      //         this.show5 = true;
+      //         this.$refs.btn.innerHTML = "完成";
+      //       }else {
+      //         this.$notify.error({
+      //           title: "错误",
+      //           message: "您输入的账号或者密码有误！"
+      //         });
+      //         console.log(this.$store.state.list);
+      //       }
+      if (lock1 && this.lock_1) {
+        this.lock = true;
+      }
+      if (lock2 && this.lock_2) {
+        this.lock = true;
+      }
+      if (lock3 && this.lock_3) {
+        this.lock = true;
+      }
+      if (lock4) {
+        this.lock = true;
+      }
       if (this.lock) {
         this.count++;
-        console.log(this.count);
         switch (this.count) {
           case 1:
-            this.show1 = true;
             break;
           case 2:
+            this.lock_1 = false;
+            this.lock = false;
             this.show1 = false;
             this.show2 = true;
             this.$refs.title.innerHTML = "完善信息";
             break;
           case 3:
+            this.lock = false;
+            this.lock_2 = false;
             this.show2 = false;
             this.show3 = true;
             break;
           case 4:
+            this.lock = false;
+            this.lock_3 = false;
             this.show3 = false;
             this.show4 = true;
             break;
           case 5:
+            console.log(1);
             this.show4 = false;
             this.show5 = true;
             this.$refs.btn.innerHTML = "完成";
             break;
           case 6:
-            console.log('注册成功')
-            // this.$router.push({ path: "/login" });//跳转首页
+            let userinfo1 = {
+              username: this.$store.state.username,
+
+              password: this.$store.state.password, //密码
+              tel: this.$store.state.phone, //手机号
+              uname: this.$store.state.xingming, //姓名
+              certType: "身份证", //证件类型
+              certNum: this.$store.state.idCard, //证件号码
+              ethnic: this.$store.state.nation, //民族
+              sex: this.$store.state.sex //性别
+            };
+            let userinfolink = {
+              identityType: this.$store.state.identity, //身份类型
+              houseArea: this.$store.state.list, //片区
+              houseTung: Number(this.$store.state.loudongnum.split('幢').join()[0]), //栋
+              houseUnit: Number(this.$store.state.danyuan.split('单元').join()[0]), //单元
+              houseNum: this.$store.state.fangwu, //房屋（门牌号）
+              // startTime: this.$store.state.beginTime, //合同开始
+              // endTime: this.$store.state.endTime, //合同结束
+              startTime: this.$store.state.beginTime, //合同开始
+              endTime: this.$store.state.endTime, //合同结束
+              refCert: this.$store.state.username //相关证件
+            };
+            axios.post('/register',qs.stringify(userinfo1)).then((result)=>{
+              console.log(result)
+            })
+
+            axios
+              .post("/register/register-link", qs.stringify(userinfolink))
+              .then(result => {
+                console.log(result);
+              });
+
+            this.$notify({
+              message: "注册成功",
+              type: "success"
+            });
+      
+            setTimeout(() => {
+              this.$router.push({ path: "/login" }); //跳转登录
+            }, 1000);
+            break;
         }
+      } else {
+        this.$notify.error({
+          title: "错误",
+          message: "您输入的账号或者密码有误！"
+        });
       }
     }
   }

@@ -33,7 +33,7 @@ export default {
     return {
       show1: false,
       show2: false,
-      lock: false
+      lock: true
     };
   },
   methods: {
@@ -57,13 +57,23 @@ export default {
         this.lock = true;
       } else this.show2 = true;
     },
-    submit(){
-      if(this.lock){
+    submit() {
+      let phonenumber = localStorage.getItem("phone");
+      axios
+        .post(
+          `/user/updatePassword?tel=${phonenumber}&password=${this.$refs.pass1.value}`
+        )
+        .then(result => {
+          console.log(result);
+        });
+      if (this.lock) {
+        this.$notify({
+          message: "密码修改成功",
+          type: "success"
+        });
         this.$router.push({ path: "/login" });
-        let phone=localStorage.phone;
+        let phone = localStorage.phone;
         console.log(phone);
-        
-
       }
     }
   }
