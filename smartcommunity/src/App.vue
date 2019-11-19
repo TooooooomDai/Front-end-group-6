@@ -1,32 +1,41 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+
     <router-view/>
+      <ul @click="housemain" v-show="show">
+        <li>
+            <router-link to="/Myhouse?uid=1">housemain</router-link> 
+        </li>
+      </ul>   
   </div>
 </template>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  data(){
+    return{
+      show:true
+    }
+  },
+  methods: {
+    housemain(){
+      this.show = false;
+    }
+  },
 }
-
-#nav {
-  padding: 30px;
+</script>
+<style scoped>
+#app{
+  height: 100%;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body{
+  position: relative;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+ul{
+  /* border: 1px solid black; */
+  position: absolute;
+  bottom: 0;
+  height: 1rem;
+  width: 100%;
+  list-style: none
 }
 </style>
