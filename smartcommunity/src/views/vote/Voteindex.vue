@@ -32,6 +32,7 @@
 </template>
 
 <script>
+	import axios from 'axios'
 	export default{
 		name:'voteindex',
 		methods:{
@@ -44,7 +45,18 @@
 			history(){
 				this.$router.push({path:'/votehistory'});
 			}
-		}
+		},
+		mounted(){
+			let data = {commVoteId:1};
+			/*axios.post('/vote/voteDetails').then(result=>{
+				console.log(result);
+			});*/
+			axios.post('/user/record?username=小王').then(result=>{
+				console.log(result);
+			  //this.recordlists=result.data.data
+			  // console.log(this.recordlists)
+    })
+		},
 	}
 	
 </script>

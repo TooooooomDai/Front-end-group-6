@@ -1,27 +1,29 @@
 <template>
 	<div id='mine'>
 		<div style='height:1rem;'></div>
-		<div class='minepage' v-for='(value,index) in mineList' :key='value.id'>
+		<div class='minepage' v-for='(value,index) in temparr' :key='value.id'>
 			<div class='minepage-header'>
 				<div class='header-name'>
 					<p class='headimg'><img :src='value.portrait' style='width:32px;height:32px;'></p>
 					<div>
-						<p>{{value.name}}</p>
+						<p>{{value.author}}</p>
 						<p>{{value.time}}</p>
 					</div>
 				</div>
 				<p class='header-secret' @click="appearlimits(index)">私密<i></i><i></i><i></i>
 					<a class='secret-handle' v-show="showarr[index]['flag']">
-						<span style='background:#873e75' @click='deletemine(value.id,index,value.name)'>删除</span>
+						<span style='background:#873e75' @click='deletemine(value.id,index,value.author)'>删除</span>
 						<span style='background:#4c3a6e'>私密</span>
 					</a>
 				</p>
 			</div>
+			<!--帖子标题-->
+			<p class='forum-title'>{{value.title}}</p>
 			<div class='minepage-content'>
 				<p>{{value.content}}</p>
 			</div>
 			<div class='minepage-imgs'>
-				<img v-for='item of value.srcs' :src='item' style='width:60px;height:60px;'>
+				<img v-for='item of value.imgsrc' :src='item' style='width:60px;height:60px;'>
 			</div>
 		</div>
 	</div>
@@ -29,28 +31,29 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import Vue from 'vue'
 	export default{
 		name:'mine',
 		data(){
-			let temp = '中新网11月12日电 据文化和旅游部官方微信消息，在今年的A级旅游景区整改提质行动中，全国复核A级旅游景区5000多家，1186家景区受到处理，其中405家受到取消等级处理。';
 			return {
-				mineList:[
-					{id:'mine1',content:temp,srcs:['../logo.png','../logo.png','../logo.png',],name:'张**',time:'2019-04-17 13:11',portrait:'../favicon.ico'},
-					{id:'mine2',content:temp,srcs:['../footermiao.png','../footermiao.png','../footermiao.png',],name:'张**',time:'2019-04-17 13:11',portrait:'../2.jpg'},
-					{id:'mine3',content:temp,srcs:['../6.jpg','../6.jpg','../6.jpg',],name:'张**',time:'2019-04-17 13:11',portrait:'../9.jpg'},
-					{id:'mine4',content:temp,srcs:['../2.jpg','../2.jpg','../2.jpg',],name:'张**',time:'2019-04-17 13:11',portrait:'../3.jpg'},
-				],
 				showarr:[],
+				temparr:[],
+				mineList:[],
 			}
 		},
 		created(){
-			let len = this.mineList.length;
-			for(let i=0;i<len;i++){
-				this.showarr.push({flag:false});
+			let arr = this.$store.state.neighbor.detIndexList;
+			let len = arr.length;
+			let num = 0;
+			for(let value of arr){
+				if(value.author == '张三') this.temparr[num++]=value;
+			}
+			for(let i=0;i<this.temparr.length;i++){
+				Vue.set(this.showarr,i,{flag:false});
 			}
 		},
 		mounted(){
-			
 		},
 		methods:{
 			appearlimits(index){
@@ -58,13 +61,27 @@
 			},
 			deletemine(paperid,index,name){
 				console.log(paperid+'----'+index+'---'+name);
-				this.mineList.splice(index,1);
+				this.temparr.splice(index,1);
+				this.$store.dispatch('neighbor/deletePage',{id:paperid,author:name});
+				
 			}
+		},
+		beforeUpdate(){
+			let arr = this.$store.state.neighbor.detIndexList;
+			let len = arr.length;
+			let num = 0;
+			for(let value of arr){
+				if(value.author == '张**') this.temparr[num++]=value;
+			}
+		},
+		computed:{
+			
 		},
 	}
 </script>
 
 <style scoped>
+	p{margin:0;padding:0;}
 	.minepage {
 		padding:10px 8px;
 		box-sizing:border-box;
@@ -91,6 +108,13 @@
 	.minepage .minepage-header .header-name .headimg>img{vertical-align:middle;}
 	.minepage .minepage-header .header-name>div{height:0.8rem;line-height:0.4rem;}
 	.minepage .minepage-header .header-name>div>p{text-align:left;}
+	.minepage .forum-title {
+		text-align:left;
+		font-weight:bolder;
+		padding:6px 0;
+		font-size:12px;
+	}
+	
 	.minepage .minepage-header .header-secret{position:absolute;right:0}
 	.minepage .minepage-header .header-secret>i{
 		display:inline-block;

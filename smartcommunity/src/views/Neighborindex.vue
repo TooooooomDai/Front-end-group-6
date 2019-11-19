@@ -14,25 +14,29 @@
 			</template>
 		</header>
 		<div style='height:1rem;'></div>
-		<div class='adimg'><img :src='adsrc' style='width:100%;'></div>
+		<div class='adimg'>
+			<van-swipe :autoplay="3000" indicator-color="white">
+			<van-swipe-item v-for='value of adsrc'><img :src='value' style='width:100%;height:4rem;'></van-swipe-item>
+			</van-swipe>
+		</div>
 		<div class='search'><input type='text' placeholder='请输入标题'></div>
 		<div id='neighbor-content'>
-			<div class='minepage' v-for='value of mineList' :key='value.id'>
+			<div class='minepage' v-for='value of indexdata' :key='value.id'>
 			<div class='minepage-header'>
 				<div class='header-name'>
 					<p class='headimg'><img :src='value.portrait' style='width:32px;height:32px;'></p>
 					<div>
-						<p>{{value.name}}</p>
+						<p>{{value.author}}</p>
 						<p>{{value.time}}</p>
 					</div>
 				</div>
 				<p class='header-secret'><i class='iconfont icon-huifu'>&nbsp;{{value.replynum}}</i><i class='iconfont icon-zan'>&nbsp;{{value.likenum}}</i></p>
 			</div>
 			<div class='minepage-content'>
-				<p>{{value.content}}</p>
+				<p>{{value.title}}</p>
 			</div>
 			<div class='minepage-imgs'>
-				<img v-for='item of value.srcs' :src='item' style='width:60px;height:60px;'>
+				<img v-for='item of value.imgsrc' :src='item' style='width:60px;height:60px;'>
 			</div>
 		</div>
 		</div>
@@ -42,11 +46,11 @@
 </template>
 
 <script>
-import TabBar from '../components/dyc/TabBar'
+	import TabBar from '../components/dyc/TabBar'
+	import axios from 'axios'
 	export default{
 		name:'neighborindex',
 		data(){
-			let temp = '中新网11月12日电 据文化和旅游部官方微信消息，在今年的A级旅游景区整改提质行动中';
 			return {
 				funList:[
 					{id:'fun1',name:'帖子详情',routename:'details'},
@@ -60,8 +64,11 @@ import TabBar from '../components/dyc/TabBar'
 				flag:'fun1',
 				flag2:false,
 				forumTitle:'',
-				adsrc:'./ad.jpg',
+				adsrc:['./ad1.jpg','./ad2.jpg','./ad3.jpg','./ad4.jpg'],
 			}
+		},
+		created(){
+			//this.$store.dispatch('neighbor/getIndexData');
 		},
 		mounted(){
 			switch(this.$route.name){
@@ -73,8 +80,6 @@ import TabBar from '../components/dyc/TabBar'
 				case 'neighborindex':{this.forumTitle='邻里';this.flag = 'fun6';break;}
 				default: break;
 			};
-			this.$store.dispatch('neighbor/getIndexData');
-			this.mineList = this.$store.state.neighbor.neiIndexList;
 		},
 		beforeRouteUpdate(to,from,next){
 			switch(to.name){
@@ -97,11 +102,14 @@ import TabBar from '../components/dyc/TabBar'
 			},
 			backorigin(){
 				this.$router.go(-1);
-			}
+			},
 			
 		},
 		computed:{
-			
+			indexdata(){
+				this.mineList = this.$store.state.neighbor.detIndexList;
+				return this.mineList;
+			}
 		},
 		components:{
 			TabBar
@@ -110,6 +118,8 @@ import TabBar from '../components/dyc/TabBar'
 </script>
 
 <style scoped>
+	#neighborindex{margin-bottom:80px;}
+	p{margin:0;padding:0;}
 	header {
 		height:1rem;
 		width:100%;
@@ -141,14 +151,19 @@ import TabBar from '../components/dyc/TabBar'
 		margin-bottom:2px;
 		margin-right:10px;
 	}
+	#neighborindex .adimg{
+		position:relative;
+		z-index:-1;
+	}
 	#neighborindex .funList {
 		position:absolute;
 		right:16px;
 		top:0px;
-		padding:8px;
+		padding:0.28rem 0px;
+		width:2rem;
 		color:black;
-		background:white;
-		z-index:2
+		background:#63c8c2;
+		z-index:1;
 	}
 	#neighborindex .funList>li {
 		font-size:14px;
@@ -162,8 +177,10 @@ import TabBar from '../components/dyc/TabBar'
 		height:3rem;
 		position:relative;
 		background-size: 100%;
+		z-index:-1;
 	}
 	#neighborindex .search>input {
+		text-align:center;
 		outline:none;
 		border:0;
 		width:80%;
@@ -180,7 +197,8 @@ import TabBar from '../components/dyc/TabBar'
 		font-size: 14px;
 	}
 	.bg{
-		background:yellow;
+		background:#005751;
+		color:white;
 	}
 	
 	.minepage {
@@ -207,7 +225,7 @@ import TabBar from '../components/dyc/TabBar'
 	}
 	.minepage .minepage-header .header-name .headimg>img{vertical-align:middle;}
 	.minepage .minepage-header .header-name>div{height:0.8rem;line-height:0.4rem;}
-	.minepage .minepage-header .header-name>div>p{text-align:left;}
+	.minepage .minepage-header .header-name>div>p{text-align:left;font-size:14px;}
 	.minepage .minepage-header .header-secret>i{
 		display:inline-block;
 		line-height:0.5rem;
@@ -216,7 +234,7 @@ import TabBar from '../components/dyc/TabBar'
 		vertical-align:middle;
 		margin-right:8px;
 	}
-	.minepage .minepage-content>p{text-align:left;line-height:18px;}
+	.minepage .minepage-content>p{text-align:left;line-height:18px;font-size:14px;}
 	.minepage .minepage-content,.minepage .minepage-imgs{margin-top:8px;}
 	.minepage .minepage-imgs>img {
 		margin-right:0.5rem;
