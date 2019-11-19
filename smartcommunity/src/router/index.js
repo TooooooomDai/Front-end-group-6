@@ -253,6 +253,12 @@ const routes = [
   },
   {
     //online的子路由
+    path:'/chat',
+    name:'chat',
+    component:()=>import('../views/community/Chat')
+  },
+  {
+    //online的子路由
     path:'/choosehome/:id',
     name:'choosehome',
     component:()=>import('../views/community/Choosehome')
@@ -403,7 +409,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

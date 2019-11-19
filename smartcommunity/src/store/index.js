@@ -13,8 +13,9 @@ import myhouse from './myhouse'
 export default new Vuex.Store({
   state: {
     peoplename:'',
-    record:'',
+    detailrecord:'',
     pass:'',
+    peopleid:'',
 
     //login
     list:'',
@@ -23,18 +24,15 @@ export default new Vuex.Store({
     fangwu:''
   },
   mutations: {
+    // zc部分
     sendname(state,people){
-      state.peoplename=people.name
-      // console.log(state.peoplename)
+      state.peoplename=people.pName
+      state.peopleid=people.pId
     },
-    sendrecord(state,record){
-      state.record=record
-      // console.log(state.record)
+    sendrecord(state,detailrecord){
+      state.detailrecord=detailrecord
     },
-    // getpass(state,pass){
-    //   state.pass=pass
-    //   console.log(state.pass)
-    // }
+    
 
 
 
@@ -57,13 +55,13 @@ export default new Vuex.Store({
      context.commit('sendname',people)
     },
     // 我的评价记录
-    sendrecord(context,record){
-      context.commit('sendrecord',record)
+    sendrecord(context,detailrecord){
+      context.commit('sendrecord',detailrecord)
     },
-    // 获取通行证
-    // getpass(context,pass){
-    //   context.commit('getpass',pass)
-    // }
+    
+
+
+    // kj部分
     pianquid(context,list){
       context.commit('pianquid',list)
     },

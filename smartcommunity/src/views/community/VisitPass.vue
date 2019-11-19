@@ -9,11 +9,11 @@
             <div class="passtopright">分享</div>
         </div>
         <div class="detail">
-            <span class="detailname">尊敬的王强先生</span>
+            <span class="detailname">尊敬的{{name}}</span>
             <img src="../../../public/img/code.png" alt="" style="width:4.5rem;height:4.5rem;">
             
                 <div>进出时请出示此证</div>
-                <div >预约时间:<span>2012-03-13</span></div> 
+                <div >预约时间:<span>{{appoint}}</span></div> 
                 <div>通行证在预约时间内有效</div>
             
         </div>
@@ -22,6 +22,16 @@
 </template>
 <script>
 export default {
+    data() {
+        return {
+            name:'',
+            appoint:''
+        }
+    },
+    mounted() {
+        this.name= localStorage.getItem("name");
+        this.appoint= localStorage.getItem("appoint");
+    },
     // 发ajax获取数据  
     computed: {
         // getpass(){
