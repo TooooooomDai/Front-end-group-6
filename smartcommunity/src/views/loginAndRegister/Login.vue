@@ -46,6 +46,7 @@ export default {
     };
   },
   methods: {
+<<<<<<< HEAD
     // userpsw() {
     //   let userpsw = this.$refs.psw.value;
     //   let shuzi = /[0-9]/;
@@ -55,12 +56,23 @@ export default {
     //   else this.show = true;
     // },
 
+=======
+    userpsw() {
+      let userpsw = this.$refs.psw.value;
+      let shuzi = /[0-9]/;
+      let zimu = /[a-zA-Z]/;
+      if (shuzi.test(userpsw) && zimu.test(userpsw) && userpsw.length >= 8)
+        this.show = false;
+      else this.show = true;
+    },  
+>>>>>>> 37c2a1283f0c8cb47a1d595eb706efd65a6c4fce
     changeType() {
       this.pswType = this.pswType === "password" ? "text" : "password";
       this.eye = !this.eye;
     },
     loginin() {
       let user = {
+<<<<<<< HEAD
         in_time: this.$refs.user.value,
         password: this.$refs.psw.value
       };
@@ -96,6 +108,33 @@ export default {
       // document.cookie="user" + "=" + user + ";expires=" + 10;
 
       // }
+=======
+        username: this.$refs.user.value,
+        password: this.$refs.psw.value
+      };
+      this.checked = true; 
+      console.log(user);
+      if (this.checked) {
+        console.log(1);
+        document.cookie = `user={username=${user.username},password=${user.password}}`;
+        this.$store.state.guardflag = false;
+        this.$router.push({ path: "/community" });
+        // document.cookie='username='+user.username+';expires='+ 10;
+        // document.cookie='password='+user.password+';expires='+ 10;
+      } else {
+        document.cookie = `user=${""}`;
+        // document.cookie='username='+user.username+';expires='+ -1;
+
+        // document.cookie="user" + "=" + user + ";expires=" + 10;
+      }
+      // axios.post("/add_student", user)
+      //   .then(function(result) {
+      //     console.log(result.data);
+      //   })
+      //   .catch(function(err) {
+      //     console.log(err);
+      //   });
+>>>>>>> 37c2a1283f0c8cb47a1d595eb706efd65a6c4fce
     }
     // clearCookie: function() {
     //             this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了

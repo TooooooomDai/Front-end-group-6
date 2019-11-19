@@ -4,7 +4,7 @@
     <div class="mine">
       <div class="account">
         <div class="userinfo">
-          <div class="portrait">头像</div>
+          <div class="portrait"><img src="3.jpg" style='width:80px;height:80px' alt=""></div>
           <p>
             <span class="name">{{name}}</span>
             <span class="type">{{type}}</span>

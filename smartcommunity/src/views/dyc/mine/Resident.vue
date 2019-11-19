@@ -41,13 +41,13 @@ export default {
 <style scoped>
 ul{
     position: absolute;
-    top: 99px;
+    top: calc(1rem + 20px);
     width:100%;
 }
 li {
   padding: 10px 20px;
   width: calc(100% - 40px);
-  border-bottom: 2px solid #ccc;
+  border-top: 2px solid #ccc;
   overflow: hidden;
 }
 li .type {
