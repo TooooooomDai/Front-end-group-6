@@ -1,8 +1,12 @@
 <template>
   <!-- 发现页面 -->
   <div class="find">
+<<<<<<< HEAD
     <div class="head">
       <span @click="prev"><img src="../assets/jiantou.jpg" alt /></span>
+=======
+    <TabBar></TabBar>
+>>>>>>> de77e96d25e48de507769d44b536846179801fe4
     <h2>发现</h2>
     </div>
     <p style="padding-right:6rem;line-height:0.5rem;">生活服务</p>

@@ -10,13 +10,12 @@ export default {
   data() {
     
     return {
-        lists: ["1", "2", "3"],
+        lists: ["1单元", "2单元", "3单元",, "4单元", "5单元", "6单元"],
         isactive:'',
     };
   },
   methods: {
     send(danyuan) {
-      console.log(danyuan);
       this.isactive=danyuan;
       this.$store.dispatch('danyuanid',danyuan);
 
@@ -29,11 +28,11 @@ export default {
 </script>
 <style scoped>
 ul {
-
-  height: 3rem;
+  overflow: auto;
+  height: 3.5rem;
   box-sizing: border-box;
   border: 1px solid #999;
-  width: 100%;
+  width: 99.9%;
   background: white;
   position: fixed;
   bottom: 0;

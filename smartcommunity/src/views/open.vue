@@ -1,5 +1,6 @@
 <template>
   <div class="open">
+    <TabBar></TabBar>
     <div class="head">
       <!-- 头部返回键 -->
       <i @click="prev">

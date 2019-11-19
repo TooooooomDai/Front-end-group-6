@@ -43,7 +43,7 @@ export default {
     methods: {
         sendhouse(house){
             // console.log(1)
-            console.log(house.id)
+            // console.log(house.id)
             this.$router.push({name:'choosehome', params:{id:house.id},query:{housename:house.name}})
             // this.$router.push({path:'choosehome',query:{housename:house.name}})
         }

@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
-
-    <div id="content">
+<keep-alive>
+ <div id="content">
       <div>
         <i>*</i>
         <p>
@@ -22,6 +22,8 @@
         </p>
       </div>
     </div>
+</keep-alive>
+   
   </div>
 </template>
 <script>

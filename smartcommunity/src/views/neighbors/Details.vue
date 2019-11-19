@@ -5,7 +5,7 @@
 			<div class='forum-index' v-for='(value,index) in msg'>
 				<!--每个帖子作者及相关信息-->
 				<div class='author'>
-					<a class='circle'></a>
+					<p class='headimg'><img :src='value.portrait' style='width:32px;height:32px;'></p>
 					<div class='name-time'>
 						<p id='author-name'>{{value.author}}</p>
 						<p>{{value.time}}</p>
@@ -23,17 +23,18 @@
 				</p>
 				<!--帖子底部信息-->
 				<p class='forum-footer'>
-					<span><span class='iconfont icon-shoucang'></span><span class='forum-function' @click='collected(value.id,value.author)'>收藏</span></span>
+					<span><span class='iconfont icon-shoucang'></span><span class='forum-function' @click="collected('我',{author:'我',pauthor:value.author,id:value.id},index)">收藏</span></span>
 					<span><span class='iconfont icon-shared'></span><span class='forum-function'>分享</span></span>
-					<span><span class='iconfont icon-huifu'></span><span class='forum-function' @click="appear('我',{author:value.author,pauthor:value.author,id:value.id},1)">回复</span></span>
+					<span><span class='iconfont icon-huifu'></span><span class='forum-function' @click="appear('我',{author:'我',pauthor:value.author,id:value.id},1)">回复</span></span>
 					<span><span class='iconfont icon-liulan'></span><span class='forum-function'>浏览</span></span>
-					<span><span class='iconfont icon-zan'></span><span class='forum-function' @click="thrumbsup('我',value.author,value.id)">赞</span></span>
+					<span v-if="!liked[index]"><span class='iconfont icon-zan'></span><span class='forum-function' @click="thrumbsup('我',{author:'我',pauthor:value.author,id:value.id},index)">赞</span></span>
+					<span v-if="liked[index]"><span class='iconfont icon-zan'></span><span class='forum-function' :class="{bg:liked[index]}">赞</span></span>
 				</p>
 				<!--谁回复谁以及查看剩余回复-->
 				<template v-if='value.replynum!==0'>
 					<div class='forum-reply'>
 						<div class='reply-container' v-for='(item,indexing) of value.replydata' v-show='flagarr[index][indexing]'>
-							<p class='reply-name'><span>{{item.author}}<i v-show="item.num!==1&&item.towhom!=='我'">回复</i><i v-show="item.num!==1&&item.towhom!='我'">{{item.towhom}}</i></span></span>2019-04-17 13:11</span></p>
+							<p class='reply-name'><span>{{item.author}}<i v-show="item.num!==1&&item.towhom!=='我'">回复</i><i v-show="item.num!==1&&item.towhom!='我'">{{item.towhom}}</i></span></span>{{item.time}}</span></p>
 							<p class='reply-content' @click="appear('我',{author:item.author,pauthor:value.author,id:value.id},2)">{{item.content}}</p>
 						</div>
 						<template v-if='noarr[index].flag'><span class='reply-look' v-on:click='lookmore(index)'>{{scrollup}}{{value.replynum-2}}条回复&gt;</span></template>
@@ -44,8 +45,10 @@
 			<!--回复输入框-->
 			<template v-if='nice'>
 				<div class='wrap'>
-					<textarea type='text' v-model='userreplyinfo' class='replyinput'></textarea>
-					<p><span @click="submit()">确定</span><span @click="cancel()">取消</span></p>
+					
+						<textarea type='text' v-model='userreplyinfo' class='replyinput'></textarea>
+						<p><span @click="submit()">确定</span><span @click="cancel()">取消</span></p>
+					
 				</div>
 			</template>
 		</section>
@@ -53,6 +56,7 @@
 
 <script>
 	import Vue from 'vue'
+	import axios from 'axios'
 	export default{
 		name:'details',
 		data(){
@@ -75,6 +79,18 @@
 				scrollup:'查看剩余',
 				whosepage:'',
 				pageid:0,
+				liked:[],
+			}
+		},
+		created(){
+			this.forumarticle = this.$store.state.neighbor.detIndexList;
+				let num = 0;
+				this.noarr=[];
+				for(let value of this.forumarticle){
+					for(let d=0;d<value.likedata.length;d++){
+						if(value.likedata[d].from=='我') Vue.set(this.liked,d,true);
+						else Vue.set(this.liked,d,false);
+					}
 			}
 		},
 		mounted(){
@@ -83,8 +99,8 @@
 			localStorage.setItem('name','刘德华');
 		},
 		methods:{
-			collected(id,author){
-				this.$store.dispatch('neighbor/collected',{id,author});
+			collected(me,obj,index){
+				this.$store.dispatch('neighbor/collected',{from:obj.author,towhom:obj.pauthor,id:obj.id});
 			},
 			appear(me,towhom,num){
 				this.nice = !this.nice;
@@ -101,16 +117,18 @@
 			/*获取用户回复别人的信息*/
 				let a = this.towhom;
 				let b = this.userreplyinfo;
-				let c = this.toflag;
-				this.nice = !this.nice;
-				
-				/*测试数据*/
-				let d = {author:this.id,towhom:a,content:b,num:c,pauthor:this.whosepage,pageid:this.pageid};
-				/*分发方法*/
-				this.$store.dispatch('neighbor/getDetailData',d);
-				
-				/*更新数据*/
-				this.forumarticle = this.$store.state.neighbor.detIndexList;
+				if(b.trim()!==''){
+					let c = this.toflag;
+					this.nice = !this.nice;
+					
+					/*测试数据*/
+					let d = {author:this.id,towhom:a,content:b,num:c,pauthor:this.whosepage,pageid:this.pageid};
+					/*分发方法*/
+					this.$store.dispatch('neighbor/getDetailData',d);
+					this.userreplyinfo = '';
+					/*更新数据*/
+					this.forumarticle = this.$store.state.neighbor.detIndexList;
+				}else this.userreplyinfo = '不能为空';
 			},
 			cancel(){
 				this.nice = !this.nice;
@@ -131,16 +149,22 @@
 					this.scrollup = '查看剩余';
 				}
 			},
-			thrumbsup(me,towhom,id){
+			thrumbsup(me,towhom,index){
+				Vue.set(this.liked,index,!this.liked[index]);
 				/*获得点赞*/
-				console.log(me+'--'+towhom+'--'+id);
-				let arr = this.$store.state.neighbor.likedata;
-				let len = this.$store.state.neighbor.likedata.length;
+				console.log(towhom.author+'-----'+towhom.pauthor+'--'+towhom.id);
+				let arr = this.$store.state.neighbor.liketempdata;
+				let len = this.$store.state.neighbor.liketempdata.length;
 				/*判断是否已经投过票*/
-				for(let i=0;i<len;i++){
-					if(arr[i].id==id) {console.log('不能再投票');return;}
+				for(let value of arr){
+					if(value.id == towhom.id && value.towhom == towhom.pauthor) {
+						console.log('不能再投票');
+						/*如果从数据库下载数据，需要这步判断*/
+						this.likeshow = false;
+						return false;
+					}
 				}
-				this.$store.state.neighbor.likedata.push({from:me,towhom:towhom,id:id});
+				this.$store.dispatch('neighbor/updatelike',{from:towhom.author,towhom:towhom.pauthor,id:towhom.id});
 				console.log('已经投票');
 			}
 		},
@@ -154,7 +178,7 @@
 					this.flagarr[num]=[];
 					if(value.replynum-2<=0){
 						this.noarr.push({flag:false});
-						if(value.replynum>0){
+						if(value.replyanum>0){
 							for(let j=0;j<value.replynum;j++){
 								this.flagarr[num][j]=true;
 							}
@@ -168,17 +192,18 @@
 					}
 					num++;
 				}
-				
-				
 				return this.forumarticle;
 			},
 		},
 		
 	
 	}
+
 </script>
 
+
 <style scoped>
+	p{margin:0;padding:0;}
 	#forum-index {
 		width:100%;
 		box-sizing:border-box;
@@ -194,14 +219,14 @@
 		flex-direction:row;
 		align-items:center;
 	}
-	#forum-index .forum-index .author .circle {
-		display:inline-block;
-		width:0.24rem;
-		height:0.24rem;
+	#forum-index .forum-index .author .headimg {
+		height:0.8rem;
+		width:0.8rem;
 		border-radius:50%;
-		background:orange;
-		margin-right:10px;
+		line-height:0.8rem;
+		margin-right:8px;
 	}
+	#forum-index .forum-index .author .headimg>img{vertical-align:middle;}
 	#author-name {
 		text-align:left;
 		margin-bottom:4px;
@@ -213,7 +238,7 @@
 		font-size:14px;
 	}
 	#forum-index .forum-index .forum-content {
-		width:7rem;
+
 		text-align:left;
 		padding-top:4px;
 		line-height:18px;
@@ -242,7 +267,7 @@
 		font-size:14px;
 		padding:0 4px;
 	}
-	#forum-index .forum-index .forum-reply {background:#f2f2f5;padding:10px 0;margin-top:10px;position:relative;}
+	#forum-index .forum-index .forum-reply {background:#faf9fe;padding:10px 0;margin-top:10px;position:relative;}
 	#forum-index .forum-index .reply-container {margin-top:8px;}
 	#forum-index .forum-index .reply-name {
 		width:6.5rem;
@@ -251,11 +276,12 @@
 		justify-content:space-between;
 		margin-left:10px;
 		margin-bottom:8px;
-		color:#eb7350;
+		color:#ef653e;
+		font-weight:bolder;
+		font-size:14px;
 	}
 	#forum-index .forum-index .reply-content {
-		
-		margin-left:10px;
+		padding-left:10px;
 		text-align:left;
 		padding-bottom:8px;
 		border-bottom:1px solid lightgray;
@@ -269,29 +295,40 @@
 		padding:4px;
 		
 	}
-	#forum-index .wrap{position:fixed;width:100%;height:2rem;z-index:1;background:yellow;left:0px;bottom:0px;}
+	#forum-index .wrap{position:fixed;width:100%;height:100%;z-index:1;background:rgba(102,102,102,0.5);left:0px;bottom:0px;}
 	#forum-index .wrap>p{
 		position:absolute;
 		bottom:0;
 		right:0;
+		padding:10px 10px 0;
+		width:100%;
+		background:#fff;
 	}
 	#forum-index .wrap>p>span{
 		display:inline-block;
-		padding:4px 10px;
-		background:white;
-		margin-right:10px;
-		margin-bottom:4px;
+		background:#f6f6f6;
+		width:6.6rem;
+		height:0.9rem;
+		line-height:0.9rem;
+		border-radius:0.3rem;
+		margin-left:15px;
+		margin-bottom:5px;
 	}
 	#forum-index .replyinput {
 		box-sizing:border-box;
-		top:0px;
+		font-size:16px;
+		bottom:2rem;
 		left:0px;
 		position:absolute;
 		width:100%;
-		height:1.4rem;
-		border:1px dashed;
-		background:pink;
-		padding:8px;
+		border:0;
+		height:5rem;
+		border-radius:20px 20px 0 0;
+		background:#fff;
+		padding:16px 8px;
 		
+	}
+	.bg{
+		color:red;
 	}
 </style>

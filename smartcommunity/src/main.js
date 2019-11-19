@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+/*引入vant组件库*/
+import { Swipe, SwipeItem } from 'vant';
+Vue.use(Swipe).use(SwipeItem);
 // 引入饿了么的组件
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

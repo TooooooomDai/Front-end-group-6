@@ -24,13 +24,13 @@ import record from '../views/record.vue'
 import find from '../views/find.vue'
 
 
-
+import store from '../store'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('../views/loginAndRegister/Login.vue'),
     // children: [
@@ -182,6 +182,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Neighbors.vue'),
+	meta:{auth:true},
 	redirect:'/neighbors/details',
 	children:[
 	{
@@ -250,6 +251,12 @@ const routes = [
     //     component:()=>import('../views/Choosehome')
     //   }
     // ]
+  },
+  {
+    //online的子路由
+    path:'/chat',
+    name:'chat',
+    component:()=>import('../views/community/Chat')
   },
   {
     //online的子路由
@@ -397,15 +404,40 @@ const routes = [
     path:'/Myhouse/Seehouse/',
     name:'seehouse',
     component: () => import('../views/Seehouse.vue')
-  }
-
-
+  },
 ]
 
+
+
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
+router.beforeEach((to, from, next) => {
+  // console.log(store);
+  if(store.state.guardflag){
+    if(from.name===null&&to.name==='login'){
+      next();
+    }else if(from.name==='login'&&to.name==='register'){
+      next();
+    }else if(to.name==='login'&&from.name==='register'){
+      next();
+    }else if(from.name==='login'&&to.name==='forgetpsw1'){
+      next();
+    }else if(to.name==='login'&&from.name==='forgetpsw1'){
+      next();
+    }else if(from.name==='forgetpsw1'&&to.name==='forgetpsw2'){
+      next();
+    }else if(to.name==='forgetpsw1'&&from.name==='forgetpsw2'){
+      next();
+    }else{
+      next('/')
+    }
+  }else{
+    next();
+  }
 
+
+})
 export default router

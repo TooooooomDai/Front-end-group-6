@@ -1,0 +1,1 @@
+document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
