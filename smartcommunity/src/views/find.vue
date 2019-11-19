@@ -1,8 +1,11 @@
 <template>
   <!-- 发现页面 -->
   <div class="find">
+    <div class="head">
+      <span @click="prev"><img src="../assets/jiantou.jpg" alt /></span>
     <h2>发现</h2>
-    <p>生活服务</p>
+    </div>
+    <p style="padding-right:6rem;line-height:0.5rem;">生活服务</p>
     <hr />
     <ul>
       <!-- <li @click="change(1)">
@@ -37,11 +40,13 @@
       <li></li>
       <li></li>
     </ul>
+<TabBar></TabBar>
   </div>
 </template>
 
 <script>
-// document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
+import TabBar from '../components/dyc/TabBar'
+document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
 export default {
   name: "findkeping",
   data() {  //数据
@@ -56,6 +61,8 @@ export default {
       ]
     };
   },
+  components:{TabBar},
+
   methods: {  //方法
     change(value) {
       switch (value) {
@@ -78,7 +85,12 @@ export default {
           this.$router.push({ path: "/fallow" });
           break;
       }
-    }
+    },
+    
+
+     prev () {
+      this.$router.go(-1)
+    },
   }
 };
 </script>
@@ -88,35 +100,51 @@ export default {
   padding: 0;
   list-style: none;
 }
+.find .head {
+  display: flex;
+  /* flex-direction: row; */
+}
+.head span img {
+  width: 0.4rem;
+  height: 0.4rem;
+  padding-top: 0.4rem;
+  display: inline-block;
+}
 .find {
   width: 100%;
 }
 .find p {
-  text-align: left;
-  font-weight: 1000;
-  height: 25px;
-  margin: 3px 0;
+  text-align: center;
+  
+  height: 0.5rem;
+  margin: 0.06rem 0;
+  line-height: 0.5rem;
+  font-size: 16px;
 }
 .find h2 {
+  font-size: 18px;
+  font-weight: 600;
   width: 100%;
-  height: 50px;
+  height: 1rem;
   background-color: white;
-  border-bottom: 10px solid rgb(231, 231, 231);
+  border-bottom: 0.2rem solid rgb(231, 231, 231);
   text-align: center;
+  line-height: 1rem;
+  padding-right: 2.2rem;
 }
 /* .find ul {
   display: flex;
   flex-direction: row;
 } */
 .find ul li {
-  width: 80px;
-  height: 80px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: inline-block;
-  padding: 10px 5px 0;
+  padding: 0.2rem 0.1rem 0;
 }
 .find li img {
-  width: 30px;
-  height: 30px;
-  margin-top: 5px;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-top: 0.1rem;
 }
 </style>

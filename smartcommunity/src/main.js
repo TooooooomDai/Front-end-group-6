@@ -22,6 +22,7 @@ import axios from 'axios'
 Vue.prototype.$ajax= axios
 
 
+
 Vue.use(ElementUI);
 Vue.use(Popup);
 Vue.use(Uploader);

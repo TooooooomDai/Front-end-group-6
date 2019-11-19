@@ -12,7 +12,9 @@
         <li>
           <img src="../assets/nana.jpg" alt />
           <span>娜娜足浴</span>
-          <img src="../assets/dainhua.jpg" alt />
+         <el-button plain @click="open1" style="border:none;">
+            <img src="../assets/dainhua.jpg" alt />
+          </el-button>
         </li>
       </ul>
       <hr />
@@ -20,7 +22,9 @@
         <li>
           <img src="../assets/jiazheng.jpg" alt />
           <span>知心家政</span>
-          <img src="../assets/dainhua.jpg" alt />
+          <el-button plain @click="open2" style="border:none;">
+            <img src="../assets/dainhua.jpg" alt />
+          </el-button>
         </li>
       </ul>
       <hr />
@@ -29,7 +33,7 @@
 </template>
 
 <script>
-// document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
+document.documentElement.style.fontSize = document.body.clientWidth * 50 / 375 + 'px'
 export default {
   name: "fallow",
   data () {
@@ -41,6 +45,18 @@ export default {
   methods: {
     prev () {
       this.$router.go(-1)
+    },
+     open1() {
+      this.$notify({
+        title: "0571-6735789",
+        type: "success"
+      });
+    },
+    open2() {
+      this.$notify({
+        title: "0571-5765724",
+        type: "success"
+      });
     }
   }
 };
@@ -48,23 +64,27 @@ export default {
 <style scoped>
 /* 头部样式 */
 .head span img {
-  width: 20px;
-  height: 20px;
+  width: 0.4rem;
+  height: 0.4rem;
 }
 .fallow .head {
   display: flex;
   flex-direction: row;
 }
 .fallow .head span {
-  margin: 15px 0 0 8px;
+  margin: 0.3rem 0 0 0.16rem;
 }
 .fallow .head h2 {
-  padding-left: 120px;
+  padding-left: 2.4rem;
+   font-size: 18px;
+  line-height: 1rem;
+  font-weight: 600;
 }
 /* 内容列表样式 */
 .fallow .content img {
-  width: 40px;
-  height: 40px;
+  width: 0.8rem;
+  height: 0.8rem;
+  padding-left: 0.2rem;
 }
 .fallow .content ul {
   display: flex;
@@ -74,7 +94,8 @@ export default {
   display: inline-block;
 }
 .fallow .content ul li span {
-  padding: 1px 168px 1px 11px;
+  padding: 0.24rem 3rem 0.44rem 0.3rem;
   display: inline-block;
+  font-size: 16px;
 }
 </style>
