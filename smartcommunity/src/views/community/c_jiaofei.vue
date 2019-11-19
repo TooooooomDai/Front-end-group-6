@@ -12,23 +12,23 @@
       </div>
     </van-sticky>
     <ul class="myMsg">
-      <li v-for="item of jiaofeilist" :key="item.jiaofeiId">
-        <strong>{{item.jiaofeiType}}</strong>
+      <li v-for="item of jiaofeilist" :key="item.payCode">
+        <strong>{{item.payType}}</strong>
         <p>
-          <b>账单编号：{{item.jiaofeiId}}</b>
+          <b>账单编号：{{item.payCode}}</b>
           <br />
-          <b>订单状态：{{item.jiaofeiState}}</b>
+          <b>订单状态：{{item.payStatus}}</b>
           <br />
-          <b>金额：{{item.jiaofeiPrice}} 元</b>
+          <b>金额：{{item.payPrice}} 元</b>
           <br />
         </p>
         <span>
           <i class="iconfont icon-shijian"></i>
-          {{item.jiaofeiStartTime}}
-          <button @click="goDetail(item.jiaofeiId)">查看详情</button>
+          {{item.payEndTime}}
+          <button @click="goDetail(item.payCode)">查看详情</button>
         </span>
         <label class="sel">
-          <input v-model="selItem" type="checkbox" v-bind:value="item.jiaofeiId" />
+          <input v-model="selItem" type="checkbox" v-bind:value="item.payCode" />
         </label>
       </li>
     </ul>
@@ -39,6 +39,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -55,12 +56,20 @@ export default {
     },
     goPay() {
       if (this.selItem[0]) {
-        let msg = this.selItem.join("&");
-        console.log(msg);
-        this.$router.push({
-          path: "/c_jiaofeizhangdan",
-          query: { jiaofeiIds: msg }
-        });
+        // let msg = this.selItem.join("&");
+        // console.log(msg);
+        // this.$router.push({
+        //   path: "/c_jiaofeizhangdan",
+        //   query: { jiaofeiIds: msg }
+        // });
+        let str='payCodes=';
+        let newstr=this.selItem.join(',');
+        str+=newstr;
+        console.log(str);
+        axios.post('/community/lifePayCost',str).then(()=>{
+          console.log('支付成功')
+          history.go(0);
+        })
       } else {
         this.$dialog.alert({
           title: "提示",
@@ -70,22 +79,27 @@ export default {
     }
   },
   mounted() {
-    this.jiaofeilist = [
-      {
-        jiaofeiId: "20191029001",
-        jiaofeiType: "水费",
-        jiaofeiPrice: "30.00",
-        jiaofeiState: "未缴费",
-        jiaofeiStartTime: "2016/2/1"
-      },
-      {
-        jiaofeiId: "20191029002",
-        jiaofeiType: "电费",
-        jiaofeiPrice: "310.54",
-        jiaofeiState: "未缴费",
-        jiaofeiStartTime: "2016/2/3"
-      }
-    ];
+    // this.jiaofeilist = [
+    //   {
+    //     jiaofeiId: "20191029001",
+    //     jiaofeiType: "水费",
+    //     jiaofeiPrice: "30.00",
+    //     jiaofeiState: "未缴费",
+    //     jiaofeiStartTime: "2016/2/1"
+    //   },
+    //   {
+    //     jiaofeiId: "20191029002",
+    //     jiaofeiType: "电费",
+    //     jiaofeiPrice: "310.54",
+    //     jiaofeiState: "未缴费",
+    //     jiaofeiStartTime: "2016/2/3"
+    //   }
+    // ];
+    let uid=localStorage.getItem('uid');
+    axios.post("community/lifePayIndex", `uid=${uid}`).then(result => {
+      console.log(result.data.data);
+      this.jiaofeilist=result.data.data
+    });
   },
   computed: {
     count() {

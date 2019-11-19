@@ -2,18 +2,42 @@
   <div class="main">
     <Title3 :title="'编辑车辆'"></Title3>
     <ul class="content">
-      <li :key="message.type" v-for="message of messages">
-        <span class="type">{{message.type}}</span>
-
-        <el-button v-if="message.type == '车辆类型'" @click="drawer = true" type="primary">
+      <li>
+        <span class="type">车辆号码</span>
+        <span class="text">
           <input class="text" @focus="focus" @blur="
+        blur" v-model="messages.carNum" />
+        </span>
+      </li>
+      <li>
+        <span class="type">车辆类型</span>
+        <span class="text">
+          <el-button @click="drawer = true" type="primary">
+            <input class="text" @focus="focus" @blur="
         blur" v-model="cartype" />
-        </el-button>
-
-        <div v-else>
+          </el-button>
+        </span>
+      </li>
+      <li>
+        <span class="type">车辆颜色</span>
+        <span class="text">
           <input class="text" @focus="focus" @blur="
-        blur" v-model="message.text" />
-        </div>
+        blur" v-model="messages.carColor" />
+        </span>
+      </li>
+      <li>
+        <span class="type">车架号</span>
+        <span class="text">
+          <input class="text" @focus="focus" @blur="
+        blur" v-model="messages.carFarme" />
+        </span>
+      </li>
+      <li>
+        <span class="type">车辆编号</span>
+        <span class="text">
+          <input class="text" @focus="focus" @blur="
+        blur" v-model="messages.cDesc1" />
+        </span>
       </li>
       <button class="btn" @click="submit">确定</button>
     </ul>
@@ -29,11 +53,12 @@
 </template>
 <script>
 import Title3 from "@/components/dyc/Title3";
+import axios from "axios";
 export default {
   name: "Editvehicle",
   data() {
     return {
-      messages: [],
+      messages: {},
       cartype: "",
       selectIndex: null,
       carindex: null,
@@ -44,14 +69,16 @@ export default {
         { type: "翻斗车" }
       ],
       drawer: false,
-      direction: "btt"
+      direction: "btt",
+      index: null,
+      cid:null
     };
   },
   methods: {
     backgd(car, index) {
       this.selectIndex = index;
       this.cartype = car.type;
-      this.messages[1].text = this.cartype;
+      this.messages.carType = this.cartype;
     },
     focus() {
       event.target.style.color = "#000";
@@ -60,20 +87,28 @@ export default {
       event.target.style.color = "#ccc";
     },
     submit() {
-      // console.log(this.messages);
+      axios.get(`car/updateCar?cid=${this.cid}&carNum=${this.messages.carNum}&carType=${this.messages.carType}&carColor=${this.messages.carColor}&carFarme=${this.messages.carFarme}&cDesc1=${this.messages.cDesc1}`).then(result => {
+        console.log(result);
+      });
     }
   },
   created() {
     this.messages = this.$route.query.messages;
+    this.index = this.$route.query.index;
+    this.cid = this.$route.query.cid;
+    console.log(this.cid);
+    console.log(this.cid);
+    // console.log(this.cid)  
   },
   mounted() {
-    this.cartype = this.messages[1].text;
+    this.cartype = this.messages.carType;
     for (let i = 0; i < this.cars.length; i++) {
       if (this.cars[i].type == this.cartype) {
         this.index = i;
         this.selectIndex = this.index;
       }
     }
+
     // console.log(this.index);
     // console.log(this.$route.query.messages);
   },

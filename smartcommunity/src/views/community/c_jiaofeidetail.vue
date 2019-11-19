@@ -9,33 +9,34 @@
     <ul class="content" v-if="jiaofeidetail">
       <li>
         缴费房屋
-        <span>{{jiaofeidetail.jiaofeiHouse}}</span>
+        <span>{{jiaofeidetail.houseNum}}</span>
       </li>
       <li>
         费用类型
-        <span>{{jiaofeidetail.jiaofeiType}}</span>
+        <span>{{jiaofeidetail.payType}}</span>
       </li>
       <li>
         账单编号
-        <span>{{jiaofeidetail.jiaofeiId}}</span>
+        <span>{{jiaofeidetail.payCode}}</span>
       </li>
       <li>
         账单状态
-        <span>{{jiaofeidetail.jiaofeiState}}</span>
+        <span>{{jiaofeidetail.payStatus}}</span>
       </li>
       <li>
         发起时间
-        <span>{{jiaofeidetail.jiaofeiStartTime}}</span>
+        <span>{{jiaofeidetail.payTime}}</span>
       </li>
       <li>
         金额
-        <span>{{jiaofeidetail.jiaofeiPrice}} 元</span>
+        <span>{{jiaofeidetail.payPrice}} 元</span>
       </li>
 
     </ul>
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -52,14 +53,19 @@ export default {
   },
   mounted() {
     this.jiaofeiId = this.$route.query.jiaofeiid;
-    this.jiaofeidetail = {
-      jiaofeiId: this.jiaofeiId,
-      jiaofeiHouse: "1号楼1单元101",
-      jiaofeiType: "电费",
-      jiaofeiPrice: "30.00",
-      jiaofeiState: "已缴费",
-      jiaofeiStartTime: "2016/2/1"
-    };
+    console.log(this.jiaofeiId)
+    // this.jiaofeidetail = {
+    //   jiaofeiId: this.jiaofeiId,
+    //   jiaofeiHouse: "1号楼1单元101",
+    //   jiaofeiType: "电费",
+    //   jiaofeiPrice: "30.00",
+    //   jiaofeiState: "已缴费",
+    //   jiaofeiStartTime: "2016/2/1"
+    // };
+    axios.post('community/lifePayDetail',`payCode=${this.jiaofeiId}`).then((result)=>{
+      console.log(result.data.data)
+      this.jiaofeidetail=result.data.data
+    })
   },
   components: {}
 };

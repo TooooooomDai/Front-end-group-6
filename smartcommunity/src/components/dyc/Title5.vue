@@ -2,7 +2,7 @@
   <div class="title">
     <div class="return" @click="back">&lt;&nbsp;返回</div>
     <div class="text">{{title}}</div>
-    <router-link :to="{ path: '/mine/mycar/editvehicle', query: {messages}}">
+    <router-link :to="{ path: '/mine/mycar/editvehicle', query: {messages,index,cid}}">
       <div class="save">编辑车辆</div>
     </router-link>
   </div>
@@ -10,14 +10,15 @@
 <script>
 export default {
   name: "Title4",
-  props: ["title", "messages"],
+  props: ["title", "messages",'index','cid'],
   methods: {
     // messages(){
     //   return this.$parent.data.messages
     // }
   },
   mounted() {
-    console.log(this.messages);
+    // console.log(this.messages);
+    console.log(this.index);
     // console.log(this.$route.query.plate);
   },
   methods: {

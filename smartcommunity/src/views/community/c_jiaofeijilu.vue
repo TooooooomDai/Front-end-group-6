@@ -17,20 +17,20 @@
       </div>
     </van-sticky>
     <ul class="myMsg">
-      <li v-for="item of jiaofeilist" :key="item.jiaofeiId">
-        <strong>{{item.jiaofeiType}}</strong>
+      <li v-for="item of jiaofeilist" :key="item.payCode">
+        <strong>{{item.payType}}</strong>
         <p>
-          <b>账单编号：{{item.jiaofeiId}}</b>
+          <b>账单编号：{{item.payCode}}</b>
           <br />
-          <b>订单状态：{{item.jiaofeiState}}</b>
+          <b>订单状态：{{item.payStatus}}</b>
           <br />
-          <b>金额：{{item.jiaofeiPrice}} 元</b>
+          <b>金额：{{item.payPrice}} 元</b>
           <br />
         </p>
         <span>
           <i class="iconfont icon-shijian"></i>
-          {{item.jiaofeiStartTime}}
-          <button  @click="goDetail(item.jiaofeiId)">查看详情</button>
+          {{item.payTime}}
+          <button @click="goDetail(item.payCode)">查看详情</button>
         </span>
       </li>
     </ul>
@@ -42,35 +42,36 @@
         @cancel="showDate"
         @confirm="getD"
       />
-    </van-popup> -->
+    </van-popup>-->
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       jiaofeilist: [],
       showDateblock: false,
       currentDate: new Date(),
-      value1: "全部",
-      value2: "全部",
+      value1: "",
+      value2: "",
       option1: [
-        { text: "请选择日期", value: "全部" },
-        { text: "2019/11", value: "2019/11" },
-        { text: "2019/10", value: "2019/10" },
-        { text: "2019/9", value: "2019/9" },
-        { text: "2019/8", value: "2019/8" },
-        { text: "2019/7", value: "2019/7" },
-        { text: "2019/6", value: "2019/6" },
-        { text: "2019/5", value: "2019/5" },
-        { text: "2019/4", value: "2019/4" },
-        { text: "2019/3", value: "2019/3" },
-        { text: "2019/2", value: "2019/2" },
-        { text: "2019/1", value: "2019/1" },
-        { text: "2018/12", value: "2018/12" }
+        { text: "请选择日期", value: "" },
+        { text: "2019/11", value: "" },
+        { text: "2019/10", value: "2019-10-01" },
+        { text: "2019/9", value: "2019-09-30" },
+        { text: "2019/8", value: "" },
+        { text: "2019/7", value: "" },
+        { text: "2019/6", value: "" },
+        { text: "2019/5", value: "" },
+        { text: "2019/4", value: "" },
+        { text: "2019/3", value: "" },
+        { text: "2019/2", value: "" },
+        { text: "2019/1", value: "" },
+        { text: "2018/12", value: "" }
       ],
       option2: [
-        { text: "请选择类型", value: "全部" },
+        { text: "请选择类型", value: "" },
         { text: "水费", value: "水费" },
         { text: "电费", value: "电费" },
         { text: "燃气费", value: "燃气费" },
@@ -81,13 +82,14 @@ export default {
   },
   methods: {
     search() {
-        let msg={
-            userId:"123456",
-            jiaofeiType:this.value2,
-            jiaofeiStartTime:this.value1,
-            jiaofeiState:"已缴费"
-        }
-        console.log(msg);
+      let msg = {
+        lifeDesc1: this.value1,
+        payType: this.value2
+      };
+      axios.post("community/lifePayList1", msg).then(result => {
+        console.log(result.data.data);
+        this.jiaofeilist=result.data.data
+      });
     },
     goDetail(jiaofeiId) {
       this.$router.push({
@@ -117,22 +119,27 @@ export default {
     }
   },
   mounted() {
-    this.jiaofeilist = [
-      {
-        jiaofeiId: "20191029003",
-        jiaofeiType: "水费",
-        jiaofeiPrice: "30.00",
-        jiaofeiState: "已缴费",
-        jiaofeiStartTime: "2016/1/1"
-      },
-      {
-        jiaofeiId: "20191029004",
-        jiaofeiType: "电费",
-        jiaofeiPrice: "310.54",
-        jiaofeiState: "已缴费",
-        jiaofeiStartTime: "2015/12/23"
-      }
-    ];
+    // this.jiaofeilist = [
+    //   {
+    //     jiaofeiId: "20191029003",
+    //     jiaofeiType: "水费",
+    //     jiaofeiPrice: "30.00",
+    //     jiaofeiState: "已缴费",
+    //     jiaofeiStartTime: "2016/1/1"
+    //   },
+    //   {
+    //     jiaofeiId: "20191029004",
+    //     jiaofeiType: "电费",
+    //     jiaofeiPrice: "310.54",
+    //     jiaofeiState: "已缴费",
+    //     jiaofeiStartTime: "2015/12/23"
+    //   }
+    // ];
+    let uid=localStorage.getItem('uid');
+    axios.post("community/lifePayListAll",`uid=${uid}`).then(result => {
+      console.log(result.data.data);
+      this.jiaofeilist=result.data.data
+    });
   }
 };
 </script>

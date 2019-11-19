@@ -3,15 +3,15 @@
     <Title4 :title="'我的车辆'"></Title4>
     <div v-if="flag">
       <ul class="content">
-        <li :key="message.car" v-for="message of messages">
+        <li style="overflow:hidden" :key="index" v-for="(message,index) of carList">
           <span class="left">
-            <span class="owner">{{message.owner}}</span>
-            <span class="color">{{message.color}}</span>
-            <span class="plate">{{message.plate}}</span>
+            <span class="owner">{{username}}</span>
+            <span class="color">{{message.carColor}}</span>
+            <span class="plate">{{message.carNum}}</span>
           </span>
           <span class="right">
-            <router-link :to="{ path: '/mine/mycar/rmation', query: { plate: message.plate}}">
-              <span class="arrow">&gt;</span>
+            <router-link :to="{ path: '/mine/mycar/rmation', query: { plate: carList[index],num:index}}">
+              <span class="arrow" style="font-size:24px;color:#666">&gt;</span>
             </router-link>
           </span>
         </li>
@@ -25,26 +25,32 @@
 </template>
 <script>
 import Title4 from "@/components/dyc/Title4";
-
+import axios from "axios";
 export default {
   name: "Mycar",
   data() {
     return {
-      messages: [
-        { owner: "张三", color: "黑色", plate: "浙K123456" },
-        { owner: "张三", color: "黑色", plate: "浙A456789" },
-        { owner: "张三", color: "白色", plate: "浙B123789" }
-      ],
-      flag: true
+      carList: [],
+      detailList: [],
+      flag: true,
+      username: "",
+      uid:null
     };
   },
   methods: {},
-  mounted() {
-      if (this.messages.length != 0) {
-        this.flag = true;
-      } else {
-        this.flag = false;
-      }
+  async mounted() {
+    this.uid = localStorage.getItem('uid')
+    this.username = this.$route.query.name;
+    await axios.get(
+  `car/selectMyCar/${this.uid}`).then(result => {
+      console.log(result.data.data);
+      this.carList = result.data.data;
+    });
+    if (this.carList.length != 0) {
+      this.flag = true;
+    } else {
+      this.flag = false;
+    }
   },
   components: {
     Title4
@@ -52,7 +58,7 @@ export default {
 };
 </script>
 <style scoped>
-.main{
+.main {
   height: 100%;
   background: #eee;
 }

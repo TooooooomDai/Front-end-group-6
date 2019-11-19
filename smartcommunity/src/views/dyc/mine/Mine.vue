@@ -4,7 +4,9 @@
     <div class="mine">
       <div class="account">
         <div class="userinfo">
-          <div class="portrait"><img src="3.jpg" style='width:80px;height:80px' alt=""></div>
+          <div class="portrait">
+            <img src="./3.jpg" style="border-radius: 10px;width:80px;height:80px" alt />
+          </div>
           <p>
             <span class="name">{{name}}</span>
             <span class="type">{{type}}</span>
@@ -21,7 +23,7 @@
         <router-link :to="{ path: '/Myhouse', query: {name}}">
           <li>我的房产</li>
         </router-link>
-        <router-link to="/mine/mycar">
+        <router-link :to="{ path: '/mine/mycar', query: {name}}">
           <li style="margin-bottom:20px">我的车辆</li>
         </router-link>
         <router-link to="/mine/neighborhood">
@@ -36,7 +38,9 @@
         <router-link to="/mine/setting">
           <li>设置</li>
         </router-link>
-        <li>退出登录</li>
+        <router-link to="/login">
+          <li @click="logout">退出登录</li>
+        </router-link>
       </ul>
     </div>
     <TabBar></TabBar>
@@ -54,6 +58,12 @@ export default {
       type: "业主",
       phonenumber: 13666666666
     };
+  },
+  methods: {
+    logout() {
+      this.$store.state.guardflag = true;
+      localStorage.removeItem("uid");
+    }
   },
   components: {
     TabBar,

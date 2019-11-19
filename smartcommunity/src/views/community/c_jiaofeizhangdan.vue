@@ -24,22 +24,23 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       zhangdanlist: [
-        {
-          jiaofeiId: "20191029001",
-          jiaofeiType: "水费",
-          jiaofeiPrice: "30.00",
-          jiaofeiStartTime: "2016/2/1"
-        },
-        {
-          jiaofeiId: "20191029002",
-          jiaofeiType: "电费",
-          jiaofeiPrice: "310.54",
-          jiaofeiStartTime: "2016/2/3"
-        }
+        // {
+        //   jiaofeiId: "20191029001",
+        //   jiaofeiType: "水费",
+        //   jiaofeiPrice: "30.00",
+        //   jiaofeiStartTime: "2016/2/1"
+        // },
+        // {
+        //   jiaofeiId: "20191029002",
+        //   jiaofeiType: "电费",
+        //   jiaofeiPrice: "310.54",
+        //   jiaofeiStartTime: "2016/2/3"
+        // }
       ]
     };
   },

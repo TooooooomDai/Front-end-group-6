@@ -5,21 +5,27 @@
       <li>
         <span class="type">头像</span>
         <span class="messages">
-          <div class="portrait"><img src="3.jpg" style="width:24px;height:24px;display:inline-block"  alt=""></div>
+          <div class="portrait">
+            <img
+              src="./3.jpg"
+              style=" border-radius: 13px;width:24px;height:24px;display:inline-block"
+              alt
+            />
+          </div>
         </span>
       </li>
       <li>
         <span class="type">用户名</span>
         <span class="messages">
           <input type="text" @focus="focus" @blur="
-        blur" v-model="id" />
+        blur" v-model="messages.id" />
         </span>
       </li>
       <li>
         <span class="type">姓名</span>
         <span class="messages">
           <input type="text" @focus="focus" @blur="
-        blur" v-model="name" />
+        blur" v-model="messages.name" />
         </span>
       </li>
       <li>
@@ -28,7 +34,7 @@
           <el-date-picker
             v-model="value1"
             type="date"
-            :placeholder="birthday"
+            :placeholder="messages.birthday"
             style="padding:none;"
           ></el-date-picker>
         </span>
@@ -37,15 +43,15 @@
         <span class="type">性别</span>
         <span class="messages">
           男
-          <input v-model="sex" type="radio" name="sex" id value="男" />
+          <input v-model="messages.sex" type="radio" name="sex" id value="男" />
           女
-          <input v-model="sex" value="女" type="radio" name="sex" id />
+          <input v-model="messages.sex" value="女" type="radio" name="sex" id />
         </span>
       </li>
       <li>
-        <span class="type" >手机号</span>
+        <span class="type">手机号</span>
         <span class="messages" style="color:#ccc">
-          {{phonenumer}}
+          {{messages.phonenumer}}
           <router-link to="/changenumber">编辑</router-link>
         </span>
       </li>
@@ -54,18 +60,27 @@
 </template>
 <script>
 import Title2 from "@/components/dyc/Title2";
-
+import axios from "axios";
 export default {
   name: "Account",
   data() {
     return {
-      id: "asd",
-      name: "张强",
-      birthday: "1991-11-01",
-      sex: "女",
-      phonenumer: "13812345678",
+      messages: {},
       value1: ""
     };
+  },
+  mounted() {
+    var data = {
+        id: "asd",
+        name: "张宏",
+        birthday: "1991-11-01",
+        sex: "女",
+        phonenumer: "13812345678"
+      };
+      this.messages = data;
+    // axios.post("user/knockdoor" + "/1").then(result => {
+    //   console.log(result.data);
+    // });
   },
   methods: {
     focus() {

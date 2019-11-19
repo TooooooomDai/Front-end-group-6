@@ -8,7 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import 'vant/lib/index.css';
 import { Popup,Uploader,Dialog,Sticky,DatetimePicker, DropdownMenu, DropdownItem,Checkbox, CheckboxGroup} from 'vant';
- 
+
+Vue.filter('baoxiuFilter', function (value) {
+  return (value && value.split('T')[0]) || '';
+});
 
 // find发现页面的六张logo图
 import find7 from './assets/timg.jpg'

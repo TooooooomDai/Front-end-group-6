@@ -1,24 +1,30 @@
 <template>
   <ul id="todo">
-    <li v-for="baoxiu of todolist" :key="baoxiu.baoxiuId" @click="goDetail(baoxiu.baoxiuId)">
+    <li v-for="baoxiu of todolist" :key="baoxiu.repairId" @click="goDetail(baoxiu.repairId)">
       <div class="title">
-        {{baoxiu.baoxiuType}}
-        <span>{{baoxiu.baoxiuEndTime}}</span>
+        {{baoxiu.rdName}}
+        <span>{{baoxiu.submitTime | baoxiuFilter()}}</span>
       </div>
       <div class="content">
-        <img :src="baoxiu.baoxiuPic" alt />
-        <div>{{baoxiu.baoxiuContent}}</div>
+        <img :src="baoxiu.rdImg" alt />
+        <div>{{baoxiu.rdDesc1}}</div>
       </div>
       <div class="footer">
-        <span>报修编号:{{baoxiu.baoxiuId}}</span>
+        <span>报修编号:{{baoxiu.repairId}}</span>
         <div class="starshow">
-             <span class="iconfont icon-xingji staroff" v-for="star of starlist" :key="star.value" :class="{staron:star.value<=baoxiu.baoxiuStar}"></span>
+          <span
+            class="iconfont icon-xingji staroff"
+            v-for="star of starlist"
+            :key="star.value"
+            :class="{staron:star.value<=baoxiu.starRating}"
+          ></span>
         </div>
       </div>
     </li>
   </ul>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -34,28 +40,39 @@ export default {
   },
   mounted() {
     //   请求待处理的报修列表
-    this.todolist = [
-      {
-        baoxiuType: "家庭报修",
-        baoxiuContent:
-          "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
-        baoxiuId: "11245445116",
-        baoxiuEndTime: "2019/06/18 15:00",
-        baoxiuPic:
-          "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
-        baoxiuStar: 3
-      },
-      {
-        baoxiuType: "小区报修",
-        baoxiuContent:
-          "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
-        baoxiuId: "11245445226",
-        baoxiuEndTime: "2019/06/20 18:00",
-        baoxiuPic:
-          "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
-        baoxiuStar: 1
-      }
-    ];
+    // this.todolist = [
+    //   {
+    //     baoxiuType: "家庭报修",
+    //     baoxiuContent:
+    //       "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
+    //     baoxiuId: "11245445116",
+    //     baoxiuEndTime: "2019/06/18 15:00",
+    //     baoxiuPic:
+    //       "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
+    //     baoxiuStar: 3
+    //   },
+    //   {
+    //     baoxiuType: "小区报修",
+    //     baoxiuContent:
+    //       "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
+    //     baoxiuId: "11245445226",
+    //     baoxiuEndTime: "2019/06/20 18:00",
+    //     baoxiuPic:
+    //       "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
+    //     baoxiuStar: 1
+    //   }
+    // ];
+    let uid = localStorage.getItem("uid");
+    axios
+      .get("repDet/getStatus?" + `rdStatus=以处理&uid=${uid}`)
+      .then(result => {
+        // console.log(result.data.data);
+        this.todolist = result.data.data;
+        console.log(this.todolist);
+        // for(let i=0;i<this.todolist.length;i++){
+        //   this.todolist[i].submitTime.split
+        // }
+      });
   },
   methods: {
     goDetail(baoxiuId) {
@@ -69,7 +86,7 @@ export default {
 </script>
 <style scoped>
 #todo {
-  background:#f8f8f8;
+  background: #f8f8f8;
   width: 6.9rem;
   padding: 0.3rem;
 }
@@ -136,8 +153,8 @@ export default {
   color: #fff;
   font-weight: bold;
 }
-.starshow{
-    float: right;
+.starshow {
+  float: right;
 }
 .staron {
   color: gold !important;

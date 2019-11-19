@@ -11,27 +11,27 @@
       <ul class="content" v-if="baoxiudetail">
         <li>
           报修编号
-          <span>{{baoxiudetail.baoxiuId}}</span>
+          <span>{{baoxiudetail.repairId}}</span>
         </li>
         <li>
           报修状态
-          <span>{{baoxiudetail.baoxiuState}}</span>
+          <span>{{baoxiudetail.rdStatus}}</span>
         </li>
         <li>
           报修类型
-          <span>{{baoxiudetail.baoxiuType}}</span>
+          <span>{{baoxiudetail.rdName}}</span>
         </li>
         <li>
           上报时间
-          <span>{{baoxiudetail.baoxiuStartTime}}</span>
+          <span>{{baoxiudetail.submitTime | baoxiuFilter()}}</span>
         </li>
         <li>
           报修房屋
-          <span>{{baoxiudetail.baoxiuHouse}}</span>
+          <span>{{baoxiudetail.rdHouse}}</span>
         </li>
         <li>
           上报内容
-          <p>{{baoxiudetail.baoxiuContent}}</p>
+          <p>{{baoxiudetail.rdDesc1}}</p>
         </li>
         <li>
           图片描述
@@ -44,14 +44,14 @@
           完成时间
           <span>{{baoxiudetail.baoxiuEndTime}}</span>
         </li>
-        <li v-if="baoxiudetail.baoxiuStar">
+        <li v-if="baoxiudetail.starRating">
           <i style="float:left;font-style:normal">服务评价</i>
           <div class="qstar">
             <span
               class="iconfont icon-xingji staroff"
               v-for="star of starlist"
               :key="star.value"
-              :class="{staron:star.value<=baoxiudetail.baoxiuStar}"
+              :class="{staron:star.value<=baoxiudetail.starRating}"
             ></span>
           </div>
         </li>
@@ -60,6 +60,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -76,20 +77,24 @@ export default {
   },
   mounted() {
     this.baoxiuid = this.$route.query.baoxiuid;
+    axios.post('repDet/getByIdQuery?repairId='+`${this.baoxiuid}`).then((result)=>{
+      this.baoxiudetail=result.data.data;
+    })
     // 发送请求 请求详细信息
-    this.baoxiudetail = {
-      baoxiuId: this.baoxiuid,
-      baoxiuState: "已完结",
-      baoxiuType: "家庭报修",
-      baoxiuStartTime: "2019/06/18 13:00",
-      baoxiuHouse: "1号楼1单元101",
-      baoxiuContent:
-        "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
-      baoxiuPic:
-        "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
-      baoxiuEndTime: "2019/06/18 19:00",
-      baoxiuStar: 3
-    };
+    // this.baoxiudetail = {
+    //   baoxiuId: this.baoxiuid,
+    //   baoxiuState: "已完结",
+    //   baoxiuType: "家庭报修",
+    //   baoxiuStartTime: "2019/06/18 13:00",
+    //   baoxiuHouse: "1号楼1单元101",
+    //   baoxiuContent:
+    //     "洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。洗手间水管损坏，麻烦物业抓紧时间安排上门维修。",
+    //   baoxiuPic:
+    //     "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png",
+    //   baoxiuEndTime: "2019/06/18 19:00",
+    //   baoxiuStar: 3
+    // };
+    
   },
   methods: {
     back() {

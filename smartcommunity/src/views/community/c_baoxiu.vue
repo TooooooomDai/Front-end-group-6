@@ -1,15 +1,15 @@
 <template>
   <div id="c_msg">
     <van-sticky>
-    <div class="title">
-      <strong>报事报修</strong>
-      <router-link to="/community">
-        <span class="iconfont icon-houtui"></span>
-      </router-link>
-      <router-link to="/c_baoxiujilu">
-        <i>报修记录</i>
-      </router-link>
-    </div>
+      <div class="title">
+        <strong>报事报修</strong>
+        <router-link to="/community">
+          <span class="iconfont icon-houtui"></span>
+        </router-link>
+        <router-link to="/c_baoxiujilu">
+          <i>报修记录</i>
+        </router-link>
+      </div>
     </van-sticky>
     <div class="baoxiumsg" @click="chooseType">
       报修类型(必填)
@@ -62,10 +62,12 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+import { Toast } from 'vant'
 export default {
   data() {
     return {
-      fileList: [{ url: "https://img.yzcdn.cn/vant/leaf.jpg" }],
+      fileList: [],
       isTypeChoose: false,
       isHome: false,
       isHouseChoose: false,
@@ -85,6 +87,37 @@ export default {
     ];
   },
   methods: {
+    // upLoaderImg(file) {
+    //   //file为 你读取成功的回调文件信息
+    //   //new 一个FormData格式的参数
+    //   let params = new FormData();
+    //   params.append("file", file);
+    //   let config = {
+    //     headers: {
+    //       //添加请求头
+    //       "Content-Type": "multipart/form-data"
+    //     }
+    //   };
+    //   return new Promise((resolve, reject) => {
+    //     //把 uploadUrl 换成自己的 上传路径
+    //     axios
+    //       .post("repDet/uploadImage", params, config)
+    //       .then(res => {
+    //         if (res && res.data && res.data.status === 1) {
+    //           //如果为真 resolve出去
+    //           resolve(res.data);
+    //         } else {
+    //           //否则 Toast 提示
+    //           Toast.fail(res.data && res.data.msg);
+    //           reject(res.data);
+    //         }
+    //       })
+    //       .catch(err => {
+    //         Toast.fail("系统异常");
+    //         reject(err);
+    //       });
+    //   });
+    // },
     chooseType() {
       this.isTypeChoose = !this.isTypeChoose;
     },
@@ -105,23 +138,29 @@ export default {
       this.baoxiuHouse = house.text;
     },
     // 此时可以自行将文件上传至服务器
-    afterRead(file) {
-      console.log(file);
+    async afterRead(file) {
+      // let uploadImg = await this.upLoaderImg(file.file); //使用上传的方法。file.file
+      // console.log(uploadImg);
     },
     submit() {
       if (this.$refs.type.innerHTML) {
         if (this.$refs.type.innerHTML == "家庭报修") {
           if (this.$refs.house.innerHTML) {
             if (this.$refs.detail.value) {
-              let msg = {
-                baoxiuType: this.$refs.type.innerHTML,
-                baoxiuHouse: this.$refs.house.innerHTML,
-                baoxiuContent: this.$refs.detail.value
-              };
               this.$dialog
                 .confirm({ message: "确定提交" })
                 .then(() => {
-                  console.log(msg);
+                  // console.log(msg);
+                  let uid = localStorage.getItem('uid');
+                  let msg1 = {
+                    uid: uid,
+                    rdName: this.$refs.type.innerHTML,
+                    rdDesc1: this.$refs.detail.value
+                  };
+                  axios.post("repDet/insertRepDet", msg1).then(() => {
+                    console.log("提交完成");
+                    history.go(0);
+                  });
                 })
                 .catch(() => {});
 
@@ -137,12 +176,16 @@ export default {
           }
         } else {
           if (this.$refs.detail.value) {
-            let msg = {
-              baoxiuType: this.$refs.type.innerHTML,
-              baoxiuHouse: "",
-              baoxiuContent: this.$refs.detail.value
+            let uid = localStorage.getItem('uid');
+            let msg1 = {
+              uid: uid,
+              rdName: this.$refs.type.innerHTML,
+              rdDesc1: this.$refs.detail.value
             };
-            console.log(msg);
+            axios.post("repDet/insertRepDet", msg1).then(() => {
+              console.log("提交完成");
+               history.go(0);
+            });
             // 发送给后端存储
           } else {
             this.$dialog.alert({ title: "提示", message: "请填写报修内容！" });
