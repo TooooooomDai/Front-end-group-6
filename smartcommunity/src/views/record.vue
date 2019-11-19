@@ -10,32 +10,62 @@
     <hr />
     <!-- 表头 -->
     <div class="header">
-      <span>时间</span>
-      <span class="list">进出门方式</span>
-      <span>房屋单元入口</span>
+      <table>
+        <tr>
+          <td>启动时间</td>
+          <td>进出门方式</td>
+          <td>进出状态</td>
+          <td>房屋单元入口</td>
+        </tr>
+        <!-- 循环遍历渲染 后端给到的数据库 -->
+        <tr :key="list.gid" v-for="list in record_list">
+          <td >{{list.gateTime}}</td>
+          <td>{{list.gateType}}</td>
+          <td>{{list.gateStatus}}</td>
+          <td>{{list.gateHouse}}</td>
+        </tr>
+        <!-- <tr>
+          <td>2019/11/5 12：24：56</td>
+          <td>人脸-进</td>
+          <td>1栋1单元</td>
+        </tr>
+        <tr>
+          <td>2019/11/6 17：34：21</td>
+          <td>指纹-进</td>
+          <td>1栋1单元</td>
+        </tr> -->
+      </table>
     </div>
-    <!-- 开门记录列表 -->
-    <ul>
-      <li>2019/11/5 12：24：56&nbsp;&nbsp;&nbsp;人脸进&nbsp;&nbsp;&nbsp;1期1幢1单元入口</li>
-    </ul>
   </div>
 </template>
 <script>
+document.documentElement.style.fontSize =
+  (document.body.clientWidth * 50) / 375 + "px";
+  import axios from 'axios';
 export default {
   data() {
-    return {};
+    return {
+      record_list:[  //
+
+      ]
+    };
+  },
+  mounted() {  //挂载
+    axios.post('/gate/selectAll').then((result)=>{
+      //axios用post获取数据
+      console.log(result.data.data[0]);
+      this.record_list=result.data.data
+    })
   },
   methods: {
     prev() {
       this.$router.go(-1);
-    }
+    },
   }
 };
 </script>
 <style>
-*{
-  /* margin: 0;
-  padding: 0; */
+* {
   list-style: none;
 }
 /* 头部样式 */
@@ -44,22 +74,30 @@ export default {
   flex-direction: row;
 }
 .head i {
-  padding: 15px;
+  padding: 0.3rem;
 }
 .head h2 {
   text-align: center;
-  padding-left: 92px;
+  padding-left: 1.84rem;
+  font-size: 18px;
+  font-weight: 600;
+  height: 1rem;
+  line-height: 1rem;
 }
 .head i img {
-  width: 20px;
-  height: 20px;
+  width: 0.4rem;
+  height: 0.4rem;
 }
-/* 表头 */
-.header {
-  display: flex;
-  flex-direction: row;
-}
-.header .list{
-    padding: 0 87px;
+.header td{
+  padding: 0.1rem;
 }
 </style>
+
+
+
+
+
+
+
+
+

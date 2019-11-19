@@ -172,6 +172,7 @@ export default {
 <style scoped>
 #homepage {
   background: #f8f8f8;
+  margin-bottom: 79px;
 }
 #homepage a {
   text-decoration: none;

@@ -1,7 +1,7 @@
 <template>
   <div id="neighbor">
 		<header>
-			<span @click='backorigin'><&nbsp;返回</span>
+			<span @click='backorigin'>&lt;&nbsp;返回</span>
 			<span>{{forumTitle}}</span>
 			<span id='neighbor-list' @click='flag2=!flag2'>
 				<i></i>
@@ -87,6 +87,7 @@ import TabBar from '../components/dyc/TabBar'
 </script>
 
 <style scoped>
+	#neighbor{margin-bottom:80px;}
 	header {
 		height:0.72rem;
 		width:100%;
@@ -123,10 +124,11 @@ import TabBar from '../components/dyc/TabBar'
 		position:absolute;
 		right:16px;
 		top:0px;
-		padding:8px;
+		padding:0.28rem 0px;
+		width:2rem;
 		color:black;
-		background:white;
-		z-index:2
+		background:#63c8c2;
+		z-index:1;
 	}
 	#neighbor .funList>li {
 		font-size:14px;
@@ -136,6 +138,7 @@ import TabBar from '../components/dyc/TabBar'
 	}
 	
 	.bg{
-		background:yellow;
+		background:#005751;
+		color:white;
 	}
 </style>

@@ -9,8 +9,8 @@
         </div>
         <div class="peoplelist">
             <ul>
-            <li :key="people.id" v-for="people of manypoeple">
-                    <span>{{people.name}}</span><input  class="peopleinput" :checked="people.name==get" type="radio" name="people" @click="sendname(people)">
+            <li :key="people.pId" v-for="people of manypeople">
+                    <span>{{people.pName}}</span><input  class="peopleinput" :checked="people.pName==get" type="radio" name="people" @click="sendname(people)">
             </li>
             </ul>
         </div>
@@ -18,20 +18,20 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
-            manypoeple:[
-                {name:'一笔姐',id:'1'},
-                {name:'陈二',id:'2'},
-                {name:'张三',id:'3'},
-                {name:'李四',id:'4'},
-                {name:'王五',id:'5'},
-            ],
+            manypeople:[]
         }
     },
     mounted() {
-        
+        // http://10.31.163.30:9081/complain/selectAll/
+        axios.get('/complain/selectAll/').then(result=>{
+            console.log(result.data.data)
+            this.manypeople=result.data.data
+            console.log(this.manypeople)
+        })
     },
     methods: {
         sendname(people){

@@ -2,7 +2,7 @@
 	<div id='collection'>
 		<div style='height:1rem;'></div>
 		<div class='minepage' v-for='value of mineList' :key='value.id' @touchmove.prevent='move($event,value.id)' @touchstart='start' :ref='value.id'>
-			<div style='position:absolute;'>
+			<div style='position:relative;'>
 			<div class='minepage-header'>
 				<div class='header-name'>
 					<p class='headimg'><img :src='value.portrait' style='width:32px;height:32px;'></p>
@@ -70,8 +70,7 @@
 
 <style scoped>
 	#collection {
-		
-		overflow:hidden;
+		position: relative;
 	}
 	.minepage {
 		padding:10px 8px;

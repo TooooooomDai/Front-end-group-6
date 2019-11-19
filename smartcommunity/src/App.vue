@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
+       
   </div>
 </template>
 
@@ -40,8 +41,12 @@ button{
   font-weight: bold;
   color: #2c3e50;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+/* ul{
+  border: 1px solid black;
+  position: absolute;
+  bottom: 0;
+  height: 1rem;
+  width: 100%;
+  list-style: none
+} */
 </style>

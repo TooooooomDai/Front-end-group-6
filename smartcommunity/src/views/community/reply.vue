@@ -7,13 +7,14 @@
             
             <div class="replytopmid">{{showtitle}}</div>
         </div>
-
-
         <div class="replycontent">
             <ul>
                 <li>
                     <div class="replytitle">
-                        <span>{{sendrecord.title}}</span>
+                        <span>
+                            {{sendrecord.comDesc}}
+
+                        </span>
                     </div>
                     <div class="replypic">
                         <div><img src="" alt=""> 1</div>
@@ -21,43 +22,55 @@
                         <div><img src="" alt=""> 3</div>
                     </div>
                     <div class="replyinform">
-                        <div>{{sendrecord.type}}</div>
-                        <div class="ptime">{{sendrecord.time}}</div>
+                        <div>
+                            {{sendrecord.comType}}
+                            </div>
+                        <div class="ptime">
+                            {{sendrecord.comTime}}
+                            </div>
                     </div>
                     <div class="replypeople">
                         <div>相关人员</div>
-                        <div class="pname">{{sendrecord.people}}</div>
+                        <div class="pname">
+                            {{sendrecord.pName}}
+                            </div>
                     </div>
                 </li>
             </ul>
         </div>
 
         <div v-if="showcontent" class="adminreply">
-            <div class="textreply">回复:{{sendrecord.replycontent}}</div>
+            <div class="textreply">回复:{{sendrecord.reportDesc}}</div>
         </div>
-
+    <!-- {{sendrecord}} -->
 
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
             showcontent:false,
-            showtitle:'未回复'
+            showtitle:'未回复',
+            comId:'',
+            datalist:''
         }
     },
     computed: {
         sendrecord(){
-            if(this.$store.state.record.replycontent){
+            // console.log(this.$store.state.detailrecord[0])
+            if(this.$store.state.detailrecord[0].reportStatus=='已回复'){
                 this.showcontent=true
                 this.showtitle='已回复'
                 //this.$refs.replyinform.value=this.$store.state.record.replycontent
             }
-            // console.log(this.$store.state.record)
-            return this.$store.state.record
+            return this.$store.state.detailrecord[0]
         }
+    },
+    mounted() {
+       
     },
 }
 </script>

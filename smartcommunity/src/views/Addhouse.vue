@@ -15,7 +15,7 @@ import addhouse from "../components/Addhouse/addhouse";
 export default {
   methods: {
     goback() {
-      this.$router.replace({ path: "/Myhouse", id: { id: 111 } });
+      this.$router.replace({ path: "/Myhouse" });
     }
   },
   components: {

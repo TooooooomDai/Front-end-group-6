@@ -59,6 +59,7 @@ export default {
 .see {
   overflow: auto;
   height: calc(100% - 1rem);
+  background: #F2F2F2;
 }
 .Seehouse {
   height: 100%;

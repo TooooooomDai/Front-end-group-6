@@ -71,9 +71,10 @@ export default {
 .bottom {
   width: 100%;
   height: 69px;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   background: #fff;
+  z-index: 99999;
   border-top: 2px solid #999;
   /* box-shadow: 0 -2px 1px #999; */
 }

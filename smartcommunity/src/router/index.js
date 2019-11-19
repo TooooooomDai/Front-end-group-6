@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Mine from '../views/dyc/mine/Mine.vue'
 import Account from '../views/dyc/mine/Account.vue'
 import ChangeNumber from '../views/dyc/mine/Changenumber.vue'
@@ -29,6 +30,26 @@ import store from '../store'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/Myhouse',
+    name: 'myhouse',
+    component: () => import('../views/Myhouse.vue')
+  },
+  {
+    path:'/Myhouse/Addhouse/',
+    name:'addhouse',
+    component: () => import('../views/Addhouse.vue')
+  },
+  {
+    path:'/Myhouse/Edithouse/',
+    name:'edithouse',
+    component: () => import('../views/Edithouse.vue')
+  },
+  {
+    path:'/Myhouse/Seehouse/',
+    name:'seehouse',
+    component: () => import('../views/Seehouse.vue')
+  },
   {
     path: '/',
     name: 'login',
@@ -182,6 +203,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Neighbors.vue'),
+	meta:{auth:true},
 	redirect:'/neighbors/details',
 	children:[
 	{
@@ -250,6 +272,12 @@ const routes = [
     //     component:()=>import('../views/Choosehome')
     //   }
     // ]
+  },
+  {
+    //online的子路由
+    path:'/chat',
+    name:'chat',
+    component:()=>import('../views/community/Chat')
   },
   {
     //online的子路由
@@ -397,9 +425,7 @@ const routes = [
     path:'/Myhouse/Seehouse/',
     name:'seehouse',
     component: () => import('../views/Seehouse.vue')
-  }
-
-
+  },
 ]
 
 

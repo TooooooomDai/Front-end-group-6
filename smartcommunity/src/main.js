@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+/*引入vant组件库*/
+import { Swipe, SwipeItem } from 'vant';
+Vue.use(Swipe).use(SwipeItem);
 // 引入饿了么的组件
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -23,6 +27,7 @@ import find6 from './assets/yule.jpg'
 // axios 改写为 Vue 的原型属性  首先在主入口文件main.js中引用，之后挂在vue的原型链上
 import axios from 'axios'
 Vue.prototype.$ajax= axios
+
 
 
 Vue.use(ElementUI);

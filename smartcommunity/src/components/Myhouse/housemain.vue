@@ -4,11 +4,11 @@
       <li :key="index" v-for="(house,index) of houseList()">
         <article>
           <div>
-            <span>{{house.address}}</span>
-            <span>{{house.idtype}}</span>
+            <span>{{house.houseTung}}{{house.houseUnit}}{{house.houseNum}}</span>
+            <span>{{house.indentityType}}</span>
           </div>
 
-          <div @click="housejump(house.state,house.idtype)" class="state">
+          <div @click="housejump(house.state,house.indentityType,house.uid)" class="state">
             <span>{{house.state}}</span>
             <span>></span>
           </div>
@@ -24,9 +24,9 @@ export default {
     return {};
   },
   methods: {
-    housejump(state, idtype) {
+    housejump(state, idtype,uid) {  //不同房产信息的跳转(审核状态  ， 身份类型用于渲染结构)
       let ids;
-      switch (idtype) {
+      switch (idtype) {    
         case "业主":
           ids = "yz";
           break;
@@ -40,8 +40,8 @@ export default {
       switch (state) {
         case "通过":
           this.$router.push({
-            path: "/Myhouse/Edithouse",
-            query: { state: "tg", idtype: ids }
+            path: "/Myhouse/Edithouse",          
+            query: { state: "tg", idtype: ids ,uid}
           });
           break;
         // case '未完善' : this.$router.push({path:'/Myhouse/Edithouse',query:{state:'wws',idtype:ids}});
@@ -49,29 +49,23 @@ export default {
         case "审核中":
           this.$router.push({
             path: "/Myhouse/Seehouse",
-            query: { state: "shz", idtype: ids }
+            query: { state: "shz", idtype: ids ,uid}
           });
           break;
         case "未通过":
           this.$router.push({
             path: "/Myhouse/Edithouse",
-            query: { state: "wtg", idtype: ids }
+            query: { state: "wtg", idtype: ids ,uid}
           });
           break;
       }
-    },
-    edithouse() {
-      this.$router.push({ path: "/Myhouse/Edithouse", query: { id: 111 } });
-    },
-    seehouse() {
-      this.$router.push({ path: "/Myhouse/Seehouse", query: { id: 111 } });
     },
     houseList() {
       return this.$store.state.myhouse.houseList;
     }
   },
   mounted() {
-    this.$store.dispatch('myhouse/init_housemain')
+    this.$store.dispatch('myhouse/init_housemain',this.$route.query)
   },
 };
 </script>

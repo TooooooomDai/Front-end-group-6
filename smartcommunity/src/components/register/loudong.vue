@@ -10,13 +10,12 @@ export default {
   data() {
     
     return {
-        lists: ["1", "2", "3"],
+        lists: ["1幢", "2幢", "3幢", "4幢", "5幢", "6幢", "7幢", "8幢", "9幢", "10幢", "11幢", "12幢"],
         isactive:'',
     };
   },
   methods: {
     send(loudong) {
-      console.log(loudong);
       this.isactive=loudong;
       this.$store.dispatch('loudongid',loudong);
 
@@ -29,11 +28,11 @@ export default {
 </script>
 <style scoped>
 ul {
-
-  height: 3rem;
+  overflow: auto;
+  height: 3.5rem;
   box-sizing: border-box;
   border: 1px solid #999;
-  width: 100%;
+  width: 99.9%;
   background: white;
   position: fixed;
   bottom: 0;

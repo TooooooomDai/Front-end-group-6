@@ -23,9 +23,6 @@
           <img src="" alt="">
       </div> -->
     </ul>
-
-    
-
   </div>
 </template>
 <script>

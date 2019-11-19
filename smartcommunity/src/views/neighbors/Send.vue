@@ -12,12 +12,13 @@
 		
 		<p @click='add' class='addpic'>+</p>
 		<p style='text-align:left;margin-top:8px;'>可上传3张图片</p>
-		<span class='publish' @click='publish(title,content)'>发布</span>
+		<span class='publish' @click="publish(8,'张**',title,content)">发布</span>
 	</div>
 
 </template>
 
 <script>
+	import axios from 'axios'
 	export default{
 		name:'send',
 		data(){
@@ -28,6 +29,8 @@
 				content:'',
 			}
 		},
+		mounted(){
+		},
 		methods:{
 			add(){
 				this.$refs.image.click();
@@ -35,8 +38,14 @@
 			change(){
 				
 			},
-			publish(title,content){
-				if(title.trim!=''&&content.trim!='') console.log(title.trim()+'------'+content.trim()+'---'+localStorage.getItem('name'));
+			publish(id,author,title,content){
+				let a = '1234567';
+				let imgsrc = ['../footermiao.png','../footermiao.png','../footermiao.png'];
+				if(title.trim!=''&&content.trim!='') {
+					let time = new Date();
+					let timestring = time.getFullYear()+'年'+time.getMonth()+'月'+time.getDate()+'日';
+					this.$store.dispatch('neighbor/addAriticle',{id:id,author:author,time:timestring,content:content,title:title,imgs:imgsrc});
+				}
 				this.title = '';
 				this.content = '';
 				this.$router.push({path:'/neighbors/details'})

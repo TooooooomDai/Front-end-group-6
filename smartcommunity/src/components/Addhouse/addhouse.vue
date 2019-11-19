@@ -111,7 +111,7 @@ export default {
     if(value[0] != undefined && value[0] != ''&& value[1] != undefined && value[1] != ''&& value[2] != undefined && value[2] != ''){
        this.subshow = true;
       let timer =  setTimeout(async() => {
-        await this.$store.dispatch('myhouse/add_submit')
+        await this.$store.dispatch('myhouse/add_submit');
        this.$refs.content.innerHTML = "提交成功！";
         
       let intime = setTimeout(() => {
@@ -132,14 +132,7 @@ export default {
         this.$refs.content.innerHTML = "提交中...";
         clearTimeout(errotime)
       },1500)
-    }
-
-      
-
-      
-      
-
-        
+    }       
     }
   },
   computed: {
@@ -155,6 +148,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('myhouse/init_addhouse');
+    this.$store.dispatch("myhouse/add_houserender", 'js');
   },
 };
 </script>
@@ -240,12 +234,13 @@ ul .pic span {
 }
 .wrap .selection {
   background: white;
-  height: 2.5rem;
+  height: 1.5rem;
   margin: 0.2rem;
   margin-top: 1rem;
   text-align: center;
   overflow: auto;
   font-size: 0.3rem;
+  margin-top: 1.5rem;
 }
 .content{
   margin: 0.1rem 0;

@@ -19,7 +19,7 @@
         <img src alt />
       </div>-->
       <button @click="submit">提交</button>
-      <button class="delete" v-if="this.$route.query.state == 'tg'" @click="deleted">删除</button>
+      <button class="delete" @click="deleted">删除</button>
       <div class="subremind" v-show="subshow">
         <div ref="content">提交中...</div>
       </div>
@@ -58,9 +58,11 @@ export default {
   },
   methods: {
     selectContent(index) {
+      
       if (index < this.limit) {
         return;
-      }
+      } 
+      this.$store.dispatch('myhouse/change_detail',index);//改变弹出框的选项
       this.show = true;
       this.ekey = index;
     },
@@ -90,7 +92,8 @@ export default {
     submit() {
       this.subshow = true;
       let timer = setTimeout(async () => {
-        await this.$store.dispatch('myhouse/edit_submit');
+
+        await this.$store.dispatch('myhouse/edit_submit',this.$route.query);
         this.$refs.content.innerHTML = "提交成功！";
         console.log(1);
        
@@ -108,7 +111,27 @@ export default {
       
     },
     deleted(){
-      this.$store.dispatch('deleted',{name:111})
+      
+      this.$refs.content.innerHTML = "删除中...";
+      this.subshow = true;
+      let timer = setTimeout(async () => {
+      await this.$store.dispatch('myhouse/deleted',{name:111});
+       this.$refs.content.innerHTML = "删除成功！";
+        let intime = setTimeout(() => {
+          this.subshow = false;
+          console.log(2);
+          
+          this.$router.replace({ path: "/Myhouse"});
+          clearTimeout(intime);
+
+          this.$refs.content.innerHTML = "提交中...";
+        }, 1500);
+
+       clearTimeout(timer); 
+
+       
+      }, 2000);
+      
     }
   },
   computed: {
@@ -219,13 +242,14 @@ ul li div {
 }
 .wrap .selection {
   background: white;
-  height: 2.5rem;
+  height: 1.5rem;
   margin: 0.2rem;
   margin-top: 1rem;
   text-align: center;
   overflow: auto;
   font-size: 0.3rem;
   padding: 0.2rem 0;
+  margin-top: 1.5rem;
 }
 .content{
   margin: 0.1rem 0 ;

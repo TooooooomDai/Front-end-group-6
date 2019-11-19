@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     addhouse() {
-      this.$router.push({ path: "/Myhouse/Addhouse"});
+      this.$router.push({ path: "/Myhouse/Addhouse"});//点击添加房屋，跳转到房屋添加
     },
     goback() {
       this.$router.push({ path: "/mine"});
