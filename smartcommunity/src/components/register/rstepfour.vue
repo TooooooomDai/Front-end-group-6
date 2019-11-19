@@ -1,59 +1,60 @@
 <template>
   <div id="wrap">
-
-    <div id="content">
-      <div>
-        <i>*</i>
-        <p>
-          用户名
-          <input type="text" placeholder="请输入" />
-        </p>
+    <keep-alive>
+      <div id="content">
+        <div>
+          <i>*</i>
+          <p>
+            用户名
+            <input type="text" placeholder="请输入" ref="username" v-on:blur="getUsername" />
+          </p>
+        </div>
+        <strong class="wrong"></strong>
+        <div>
+          <i>*</i>
+          <p>
+            姓名
+            <input type="text" placeholder="请输入" ref="Rname" v-on:blur="getXingming" />
+          </p>
+        </div>
+        <div>
+          <i>*</i>
+          <p>
+            性别
+            <select name id="sex" ref="sex" v-on:blur="getSex">
+              <option value="as">男</option>
+              <option value="as">女</option>
+            </select>
+          </p>
+        </div>
+        <div>
+          <i>*</i>
+          <p>
+            证件类型
+            <input type="text" value="身份证" readonly/>
+          </p>
+        </div>
+        <div>
+          <i></i>
+          <p>
+            证件号码
+            <input type="text" placeholder="请输入" v-on:blur="idCardyz" ref="usercard" />
+          </p>
+        </div>
+        <strong class="wrong" v-show="showIDcard">身份证号不正确</strong>
+        <div>
+          <i>*</i>
+          <p>
+            民族
+            <select name id="nation" ref="nation" v-on:blur="getNation">
+              <option value="hz">汉族</option>
+              <option value="mz">满族</option>
+              <option value="qt">其他</option>
+            </select>
+          </p>
+        </div>
       </div>
-      <strong class="wrong"></strong>
-      <div>
-        <i>*</i>
-        <p>
-          姓名
-          <input type="text" placeholder="请输入" />
-        </p>
-      </div>
-      <div>
-        <i>*</i>
-        <p>
-          性别
-          <select name id="sex">
-            <option value="as">男</option>
-            <option value="as">女</option>
-          </select>
-        </p>
-      </div>
-      <div>
-        <i>*</i>
-        <p>
-          证件类型
-          <input type="text" value="身份证" />
-        </p>
-      </div>
-      <div>
-        <i></i>
-        <p>
-          证件号码
-          <input type="text" placeholder="请输入" v-on:blur="idCardyz"/>
-        </p>
-      </div>
-      <strong class="wrong" ref="usercard" v-show="showIDcard">身份证号不正确</strong>
-      <div>
-        <i>*</i>
-        <p>
-          民族
-          <select name id="nation">
-            <option value="hz">汉族</option>
-            <option value="mz">满族</option>
-            <option value="qt">其他</option>
-          </select>
-        </p>
-      </div>
-    </div>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -61,20 +62,41 @@ export default {
   name: "rstepone",
   data() {
     return {
-      showIDcard:false,
-    }
+      showIDcard: false
+    };
+  },
+  mounted() {
+    this.$store.dispatch("getSex", this.$refs.sex.value);
+    this.$store.dispatch("getNation", this.$refs.nation.value);
   },
   methods: {
-    idCardyz(){
-      let userCaed = this.$refs.usercard.value;
-      let reg=/^\d{6}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[0-1])\d{3}[\d\x\X]$/;
-      if(reg.test(userCaed)){
-
-      }else{
-        this.showIDcard=true
+    idCardyz() {
+      let userCard = this.$refs.usercard.value;
+      console.log(userCard);
+      let reg = /^\d{6}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[0-1])\d{3}[\d\x\X]$/;
+      if (reg.test(userCard)) {
+        this.showIDcard = false;
+        this.$store.dispatch("getIdcard", userCard);
+        console.log(userCard);
+      } else {
+        this.showIDcard = true;
       }
+    },
+    getUsername() {
+      this.$store.dispatch("getUsername", this.$refs.username.value);
+      // console.log(this.$refs.username.value)
+    },
+    getXingming() {
+      this.$store.dispatch("getXingming", this.$refs.Rname.value);
+      // console.log(this.$refs.Rname.value)
+    },
+    getSex() {
+      this.$store.dispatch("getSex", this.$refs.sex.value);
+    },
+    getNation() {
+      this.$store.dispatch("getNation", this.$refs.nation.value);
     }
-  },
+  }
 };
 </script>
 <style scoped>

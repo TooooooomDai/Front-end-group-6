@@ -1,5 +1,6 @@
 <template>
   <div id="wrap">
+    <div class="ze" ref="zhezhao"></div>
     <div id="content">
       <div>
         <i>*</i>
@@ -17,11 +18,7 @@
         <p>
           片区
           <span class="neirong">{{pianquid}}</span>
-          <span
-            class="iconfont icon-qianjin"
-            v-show="!showpianqu"
-            @click="showpianqu=!showpianqu;show=!show"
-          ></span>
+          <span class="iconfont icon-qianjin" v-show="!showpianqu" @click="pianqu"></span>
           <pianqu v-show="showpianqu"></pianqu>
           <button @click="queding" v-show="show" class="queding">确定</button>
         </p>
@@ -31,11 +28,7 @@
         <p>
           楼栋
           <span class="neirong">{{loudongid}}</span>
-          <span
-            class="iconfont icon-qianjin"
-            v-show="!showloudong"
-            @click="showloudong=!showloudong;show=!show"
-          ></span>
+          <span class="iconfont icon-qianjin" v-show="!showloudong" @click="loudong"></span>
           <loudong v-show="showloudong"></loudong>
         </p>
       </div>
@@ -44,11 +37,7 @@
         <p>
           单元
           <span class="neirong">{{danyuanid}}</span>
-          <span
-            class="iconfont icon-qianjin"
-            v-show="!showdanyuan"
-            @click="showdanyuan=!showdanyuan;show=!show"
-          ></span>
+          <span class="iconfont icon-qianjin" v-show="!showdanyuan" @click="danyuan"></span>
           <danyuan v-show="showdanyuan"></danyuan>
         </p>
       </div>
@@ -57,11 +46,7 @@
         <p>
           房屋
           <span class="neirong">{{fangwuid}}</span>
-          <span
-            class="iconfont icon-qianjin"
-            v-show="!showfangwu"
-            @click="showfangwu=!showfangwu;show=!show"
-          ></span>
+          <span class="iconfont icon-qianjin" v-show="!showfangwu" @click="fangwu"></span>
           <fangwu v-show="showfangwu"></fangwu>
         </p>
       </div>
@@ -85,17 +70,45 @@ export default {
       showfangwu: false
     };
   },
+  mounted() {
+    this.$store.dispatch("identitychoose", identity);
+  },
   methods: {
+    pianqu() {
+      this.showpianqu = !this.showpianqu;
+      this.show = !this.show;
+      this.$refs.zhezhao.style.zIndex = 10;
+    },
+    loudong() {
+      this.showloudong = !this.showloudong;
+      this.show = !this.show;
+      this.$refs.zhezhao.style.zIndex = 10;
+    },
+    danyuan() {
+      this.showdanyuan = !this.showdanyuan;
+      this.show = !this.show;
+      this.$refs.zhezhao.style.zIndex = 10;
+    },
+    fangwu() {
+      this.showfangwu = !this.showfangwu;
+      this.show = !this.show;
+      this.$refs.zhezhao.style.zIndex = 10;
+    },
+    zhezhao() {
+      console.log(1);
+      // console.log(this.$refs.zhezhao.style)
+    },
     queding() {
       this.showpianqu = false;
       this.showloudong = false;
       this.showdanyuan = false;
       this.showfangwu = false;
       this.show = false;
+      this.$refs.zhezhao.style.zIndex = 0;
     },
     identitychoose() {
       // this.$refs.identity.value
-      localStorage.setItem("identity",this.$refs.identity.value );
+      this.$store.dispatch("identitychoose", identity);
     }
   },
   components: {
@@ -178,21 +191,28 @@ option {
   font-size: 12px;
 }
 .queding {
-  width: 1rem;
-  height: 0.5rem;
+  width: 1.2rem;
+  height: 0.7rem;
   position: fixed;
   right: 0.5rem;
   bottom: 0.5rem;
   z-index: 10;
   background: #92dce7;
   border: none;
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: 600;
   color: white;
+  border-radius: 0.2rem
 }
-.zhezhao {
+#wrap {
+  position: relative;
+}
+.ze {
+  position: absolute;
   width: 100%;
   height: 100%;
-  background: gray;
-  z-index: 5;
+  background: white;
+  opacity: 0.5;
+  z-index: 0;
 }
 </style>

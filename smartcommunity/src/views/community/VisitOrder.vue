@@ -46,8 +46,8 @@
     </div>
     <div class="date">
       <div class="yuyue">预约时间</div>
-      <el-date-picker v-model="value1" type="date" placeholder="预约日期" style="width:3rem;"></el-date-picker>
-      <el-date-picker v-model="value2" type="date" placeholder="到期日期" style="width:3rem"></el-date-picker>
+      <el-date-picker v-model="value1" type="date" placeholder="预约日期" style="width:3rem;" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker v-model="value2" type="date" placeholder="到期日期" style="width:3rem" value-format="yyyy-MM-dd"></el-date-picker>
     </div>
     <div class="vtext">
       <input ref="vtext" type="text" placeholder="来访说明" />
@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -84,9 +85,10 @@ export default {
       // console.log(vcarnum)
       let vtext = this.$refs.vtext.value;
       // console.log(vtext)
-      let vtime1 = this.value1.toLocaleString();
-      let vtime2 = this.value2.toLocaleString();
+      let vtime1 = this.value1.toLocaleString().split('上午')[0];
+      let vtime2 = this.value2.toLocaleString().split('上午')[0];
       console.log(vtime1);
+      console.log(vtime2);
       if (
         vname == "" ||
         vphone == "" ||
@@ -103,19 +105,25 @@ export default {
               });
       } else {
         this.inform = {
-          name: vname,
-          phone: vphone,
-          sex: this.sex,
-          vid: vid,
-          car: vcar,
-          carnum: vcarnum,
-          text: vtext,
-          appoint: vtime1,
-          expire: vtime2
+          uersname:'小王',
+          vaName: vname,
+          vaTel: vphone,
+          vaSex: this.sex,
+          vaCertNum: vid,
+          driverFlag: vcar,
+          vaCarsNum: vcarnum,
+          vaDesc: vtext,
+          visitorAppointmentTime: vtime1,
+          vaEndTime: vtime2
         };
         this.$router.push({ path: "/visitpass" });
         // this.$store.dispatch('getpass',{name:vname,appoint:vtime1})
         console.log(this.inform);
+        localStorage.setItem("name",vname)
+        localStorage.setItem("appoint",vtime1)
+        // localStorage.name=vname;
+        // localStorage.appoint=vtime1
+        axios.post('/user/licenses?',this.inform)
       }
     }
   }

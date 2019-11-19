@@ -9,7 +9,7 @@
     <div id="content">
       <div class="write">
         <keep-alive>
-          <input v-on:blur="shouji" ref="msg" type="text" id="phone" placeholder="请输入手机号" />
+          <input v-on:blur="shouji" ref="msg" type="text" id="phone" maxlength="11" placeholder="请输入手机号" />
         </keep-alive>
       </div>
       <p class="wrong" v-show="showshouji">请输入正确的手机号</p>
@@ -76,6 +76,11 @@ export default {
       if (this.lock1 && this.lock2) {
         this.$router.push({ path: "/forgetpsw2" });
         localStorage.setItem("phone", this.$refs.msg.value);
+      }else{
+        this.$notify.error({
+          title: '错误',
+          message: '您输入的信息有误！'
+        });
       }
     },
     back() {

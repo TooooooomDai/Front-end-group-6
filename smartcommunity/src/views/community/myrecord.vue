@@ -12,9 +12,9 @@
 
     <div class="mold">
       <div @click="showall" :class="{active:all}">全部</div>
-      <div @click="showtousu" :class="{active:tousu}">投诉</div>
-      <div @click="showbiaoyang" :class="{active:biaoyang}">表扬</div>
-      <div @click="showjianyi" :class="{active:jianyi}">建议</div>
+      <div @click="showtousu($event)" :class="{active:tousu}">投诉</div>
+      <div @click="showbiaoyang($event)" :class="{active:biaoyang}">表扬</div>
+      <div @click="showjianyi($event)" :class="{active:jianyi}">建议</div>
     </div>
 
 
@@ -26,40 +26,128 @@
           <ul>
             <li :key="data.id" v-for="data of datalists" @click="sendrecord(data)">
               <div class="recordtitle">
-                <span>{{data.tile}}</span>
+                <span style="font-size:16px">内容:{{data.comDesc}}</span>
                 <span class="iconfont icon-qianjin qianjin"></span>
               </div>
               <div class="recordpic">
                 <div>
-                  <img src alt /> 1
+                  <img src alt /> 
                 </div>
                 <div>
-                  <img src alt /> 2
+                  <img src alt /> 
                 </div>
                 <div>
-                  <img src alt /> 3
+                  <img src alt /> 
                 </div>
               </div>
               <div class="recordinform">
-                <div>{{data.static}}</div>
-                <div>{{data.type}}</div>
-                <div>{{data.time}}</div>
+                <div>{{data.reportStatus}}</div>
+                <div>{{data.comType}}</div>
+                <div>{{data.reportTime}}</div>
               </div>
               <div class="recordpeople">
                 <div>相关人员</div>
-                <div class="pname">{{data.people}}</div>
+                <div class="pname">{{data.pName}}</div>
               </div>
             </li>
           </ul>
         </div>
-        <div v-show="tousu">456</div>
-        <div v-show="biaoyang">789</div>
-        <div v-show="jianyi">000</div>
+        <div v-show="tousu">
+          <ul>
+            <li :key="data.id" v-for="data of datalists" @click="sendrecord(data)">
+              <div class="recordtitle">
+                <span style="font-size:16px">内容:{{data.comDesc}}</span>
+                <span class="iconfont icon-qianjin qianjin"></span>
+              </div>
+              <div class="recordpic">
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+              </div>
+              <div class="recordinform">
+                <div>{{data.reportStatus}}</div>
+                <div>{{data.comType}}</div>
+                <div>{{data.reportTime}}</div>
+              </div>
+              <div class="recordpeople">
+                <div>相关人员</div>
+                <div class="pname">{{data.pName}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div v-show="biaoyang">
+          <ul>
+            <li :key="data.id" v-for="data of datalists" @click="sendrecord(data)">
+              <div class="recordtitle">
+                <span style="font-size:16px">内容:{{data.comDesc}}</span>
+                <span class="iconfont icon-qianjin qianjin"></span>
+              </div>
+              <div class="recordpic">
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+              </div>
+              <div class="recordinform">
+                <div>{{data.reportStatus}}</div>
+                <div>{{data.comType}}</div>
+                <div>{{data.reportTime}}</div>
+              </div>
+              <div class="recordpeople">
+                <div>相关人员</div>
+                <div class="pname">{{data.pName}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div v-show="jianyi">
+          <ul>
+            <li :key="data.id" v-for="data of datalists" @click="sendrecord(data)">
+              <div class="recordtitle">
+                <span style="font-size:16px">内容:{{data.comDesc}}</span>
+                <span class="iconfont icon-qianjin qianjin"></span>
+              </div>
+              <div class="recordpic">
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+                <div>
+                  <img src alt /> 
+                </div>
+              </div>
+              <div class="recordinform">
+                <div>{{data.reportStatus}}</div>
+                <div>{{data.comType}}</div>
+                <div>{{data.reportTime}}</div>
+              </div>
+              <div class="recordpeople">
+                <div>相关人员</div>
+                <div class="pname">{{data.pName}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     <!-- </router-link> -->
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -71,26 +159,11 @@ export default {
     };
   },
   mounted() {
-    //   默认一进入
-      (this.datalists = [
-          {
-            title: "垃圾未清理",
-            static: "已回复",
-            type: "投诉",
-            time: "2019-11-12",
-            people: "陈二",
-            replycontent:'好的',
-            id:1
-          },
-          {
-            title: "门口有陌生人",
-            static: "未回复",
-            type: "建议",
-            time: "2019-11-12",
-            people: "陈二",
-            id:2
-          }
-        ]);
+    //http://10.31.163.30:9081/complain/selectCom/{uid}
+      axios.get('complain/selectCom/1').then(result=>{
+        // console.log(result)
+        this.datalists=result.data.data
+      })
   },
   methods: {
     showall() {
@@ -98,45 +171,50 @@ export default {
         (this.tousu = false),
         (this.jianyi = false),
         (this.biaoyang = false),
-        (this.datalists = [
-          {
-            title: "垃圾未清理",
-            static: "未回复",
-            type: "投诉",
-            time: "2019-11-12",
-            people: "陈二",
-            replycontent:'好的'
-          },
-          {
-            title: "门口有陌生人",
-            static: "未回复",
-            type: "建议",
-            time: "2019-11-12",
-            people: "陈二",
-          }
-        ]);
+        axios.get('complain/selectCom/1').then(result=>{
+        // console.log(result)
+        this.datalists=result.data.data
+      })
     },
-    showjianyi() {
+    showjianyi(e) {
       (this.all = false),
         (this.tousu = false),
         (this.jianyi = true),
         (this.biaoyang = false);
+        console.log(e.target.innerHTML)
+        axios.get(`complain/selectType/1/${e.target.innerHTML}`).then(result=>{
+        // console.log(result)
+        this.datalists=result.data.data
+      })
     },
-    showtousu() {
+    showtousu(e) {
       (this.all = false),
         (this.tousu = true),
         (this.jianyi = false),
         (this.biaoyang = false);
+        axios.get(`complain/selectType/1/${e.target.innerHTML}`).then(result=>{
+        // console.log(result)
+        this.datalists=result.data.data
+      })
     },
-    showbiaoyang() {
+    showbiaoyang(e) {
       (this.all = false),
         (this.tousu = false),
         (this.jianyi = false),
         (this.biaoyang = true);
+        axios.get(`complain/selectType/1/${e.target.innerHTML}`).then(result=>{
+        // console.log(result)
+        this.datalists=result.data.data
+      })
     },
     sendrecord(record){
         this.$router.push('/reply')
-        this.$store.dispatch('sendrecord',record)
+        // console.log(record)
+        axios.get(`/complain/selectOne/${record.comId}`).then(result=>{
+          console.log(result.data.data)
+          this.$store.dispatch('sendrecord',result.data.data)
+        })
+        
     }
   }
 };

@@ -24,9 +24,6 @@
       </div>
       <div class="complaint-type">
         <span class="type">选择类型</span>
-        <!-- <div class="tousu" @click="toactive" >投诉</div>
-                <div class="jianyi" >建议</div>
-        <div class="biaoyang">表扬</div>-->
         <ul>
           <li
             ref="type"
@@ -37,17 +34,23 @@
           >{{type.name}}</li>
         </ul>
       </div>
-
       <div class="content">
         <textarea @click="check" ref="neirong" name class="neirong" placeholder="请输入你要写的事"></textarea>
       </div>
 
-      <div class="contentpic">
+      <!-- <div class="contentpic">
         <div class="jia">
           <span>+</span>
         </div>
         <div class="pic">可添加三张图片</div>
+      </div>-->
+      <div class="contentpic">
+        图片上传(可填)
+        <br />
+        <van-uploader :after-read="afterRead" v-model="fileList" multiple :max-count="3" />
+        <!-- <input type="file" placeholder="上传图片"> -->
       </div>
+
       <div class="submit">
         <button @click="senddata">提交</button>
       </div>
@@ -55,9 +58,14 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
+      fileList: [
+        { url: "https://img.yzcdn.cn/vant/leaf.jpg" },
+        { url: "https://img.yzcdn.cn/vant/cat.jpeg", name: "图片1" }
+      ],
       selecttype: "",
       types: [
         {
@@ -69,51 +77,83 @@ export default {
         {
           name: "建议"
         }
-      ]
+      ],
+      inform: "",
+      pic1: "",
+      pic2: "",
+      pic3: ""
+      // dropzFile:''
     };
   },
   methods: {
+    afterRead(file) {
+      // console.log(file.file)
+      // this.dropzFile=file.file
+      // console.log(this.dropzFile)
+
+      var formData = new FormData();
+      formData.append("dropzFile", file.file);
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      console.log(formData.get("dropzFile"));
+      axios.post("/complain/uploadImage", formData, config).then(result => {
+        console.log("发送成功");
+      });
+    },
+
     toactive(type) {
       this.selecttype = type;
       if (this.$refs.people.innerHTML == "") {
         this.$dialog.alert({
-                title: "提示",
-                message: "请选择人员"
-              });
+          title: "提示",
+          message: "请选择人员"
+        });
         this.selecttype = "";
       }
     },
     check() {
       if (this.$refs.people.innerHTML == "") {
         this.$dialog.alert({
-                title: "提示",
-                message: "请选择人员"
-              });
+          title: "提示",
+          message: "请选择人员"
+        });
         this.$refs.neirong.disabled = true;
       }
     },
     senddata() {
-      // console.log(this.$refs.neirong.value)
-      // console.log(this.$refs.people.innerHTML)
-      // console.log(this.selecttype.name)
       if (this.$refs.neirong.value != "" && this.selecttype.name != "") {
         console.log({
           type: this.selecttype.name,
-          people: this.$refs.people.innerHTML,
-          text: this.$refs.neirong.value
+          // people: this.$refs.people.innerHTML,
+          text: this.$refs.neirong.value,
+          uid: this.$store.state.peopleid
         });
+        this.inform = {
+          comType: this.selecttype.name,
+          // comPerson: this.$refs.people.innerHTML,
+          comDesc: this.$refs.neirong.value,
+          pId: this.$store.state.peopleid,
+          uid: "1"
+        };
+
+        axios
+          .get("/complain/insertSelective", { params: this.inform })
+          .then(result => {
+            console.log("发送成功");
+          });
         this.$dialog.alert({
-                title: "提示",
-                message: "提交成功"
-              });
+          title: "提示",
+          message: "提交成功"
+        });
         this.$refs.neirong.value = "";
         this.$refs.people.innerHTML = "";
         this.selecttype = "";
       } else {
         this.$dialog.alert({
-                title: "提示",
-                message: "请输入信息"
-              });
+          title: "提示",
+          message: "请输入信息"
+        });
       }
     },
     empty() {
@@ -122,7 +162,6 @@ export default {
   },
   computed: {
     sendname() {
-      // console.log(this.$store.state.people)
       return this.$store.state.peoplename;
     }
   }
@@ -236,10 +275,19 @@ export default {
   background: white;
 }
 .contentpic {
-  background: white;
+  /* background: white;
   margin-top: 0.2rem;
   height: 3.2rem;
-  overflow: hidden;
+  overflow: hidden; */
+
+  height: 4rem;
+  width: 7.1rem;
+  padding: 0 0.2rem;
+  margin-top: 0.2rem;
+  background: #fff;
+  font-size: 0.3rem;
+  line-height: 1rem;
+  text-align: left;
 }
 .jia {
   /* height: 2rem; */

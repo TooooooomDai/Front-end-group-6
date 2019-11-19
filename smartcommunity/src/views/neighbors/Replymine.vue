@@ -85,7 +85,7 @@
 			let a = 0;
 			let len = arr.length;
 			for(let value of arr){
-				if(value.author=='张**') this.forumarticle[a++]=value;
+				if(value.author=='张三') this.forumarticle[a++]=value;
 			}
 		},
 		mounted(){
@@ -98,7 +98,7 @@
 			let a = 0;
 			let len = arr.length;
 			for(let value of arr){
-				if(value.author=='张**') this.forumarticle[a++]=value;
+				if(value.author=='张三') this.forumarticle[a++]=value;
 			}
 		},
 		methods:{
