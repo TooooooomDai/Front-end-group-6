@@ -60,7 +60,6 @@ export default {
           break;
       }
     },
-
     houseList() {
       return this.$store.state.myhouse.houseList;
     }
