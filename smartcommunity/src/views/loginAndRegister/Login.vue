@@ -4,19 +4,20 @@
     <div class="kong"></div>
     <div class="writein">
       <span class="iconfont icon-zhanghu icon"></span>
-      <input type="text" id="login" placeholder="请输入您的用户名或手机号" />
+      <input type="text" id="login" placeholder="请输入您的用户名或手机号" ref="user" />
     </div>
     <div class="writein">
       <span class="iconfont icon-kaisuo icon"></span>
-      <input v-on:blur="userpsw" ref="psw" :type="pswType" id="password" placeholder="请输入密码" />
+      <input ref="psw" :type="pswType" id="password" placeholder="请输入密码" />
       <span class="iconfont icon-jurassic_loseeyes icon" @click="changeType" v-show="eye"></span>
       <span class="iconfont icon-yanjing icon" @click="changeType" v-show="!eye"></span>
     </div>
-    <p class="wrong" v-show="show">请输入八位字母加数字的有效密码</p>
+    <!-- <p class="wrong" v-show="show">请输入八位字母加数字的有效密码</p> -->
     <div class="operationpassword">
-      <input type="checkbox" id="rember" v-model="checked"/> 记住密码
-      <router-link to="/forgetpsw1"><span class="forget">忘记密码</span></router-link>
-      
+      <input type="checkbox" id="rember" v-model="checked" /> 记住密码
+      <router-link to="/forgetpsw1">
+        <span class="forget">忘记密码</span>
+      </router-link>
     </div>
     <button @click="loginin">登录</button>
     <div id="foot">
@@ -29,6 +30,8 @@
 </template>
 <script>
 // import "../assets/font/iconfont.css";
+import axios from "axios";
+import qs from "qs";
 document.documentElement.style.fontSize =
   (document.body.clientWidth * 50) / 375 + "px";
 export default {
@@ -36,52 +39,64 @@ export default {
   data() {
     return {
       show: false,
-      showshouji:false,
+      showshouji: false,
       pswType: "password",
       eye: true,
-      checked:false
+      checked: false
     };
   },
   methods: {
-    userpsw() {
-      let userpsw = this.$refs.psw.value;
-      let shuzi = /[0-9]/;
-      let zimu = /[a-zA-Z]/;
-      if (shuzi.test(userpsw) && zimu.test(userpsw) && userpsw.length >= 8)
-        this.show = false;
-      else this.show = true;
-    },
-    
+    // userpsw() {
+    //   let userpsw = this.$refs.psw.value;
+    //   let shuzi = /[0-9]/;
+    //   let zimu = /[a-zA-Z]/;
+    //   if (shuzi.test(userpsw) && zimu.test(userpsw) && userpsw.length >= 8)
+    //     this.show = false;
+    //   else this.show = true;
+    // },
+
     changeType() {
       this.pswType = this.pswType === "password" ? "text" : "password";
       this.eye = !this.eye;
     },
     loginin() {
-      let user={
-        username:this.$refs.user.value,
-        password:this.$refs.psw.value
-      }
-      console.log(user)
-      if(this.checked==true){
-        console.log(1);
-        document.cookie=`user={username=${user.username},password=${user.password}}`
-        // document.cookie='username='+user.username+';expires='+ 10;
-        // document.cookie='password='+user.password+';expires='+ 10;
-      }else{
-        document.cookie=`user=${''}`
-        // document.cookie='username='+user.username+';expires='+ -1;
+      let user = {
+        in_time: this.$refs.user.value,
+        password: this.$refs.psw.value
+      };
 
-        // document.cookie="user" + "=" + user + ";expires=" + 10;
+      axios
+        .post(
+          `/loginup?username=${this.$refs.user.value}&password=${this.$refs.psw.value}`
+        )
+        .then(result => {
+          if (result.data) {
+            // console.log(1231)
+            // console.log(this.$store.state.loudongnum.split('幢').join()[0])
+            localStorage.setItem("uid", result.data.uid);
+            this.$notify({
+              message: "登录成功",
+              type: "success"
+            });
+          } else {
+            this.$notify.error({
+              title: "错误",
+              message: "您输入的账号或者密码有误！"
+            });
+          }
+        });
 
-      }
-      // axios.post("/add_student", user)
-      //   .then(function(result) {
-      //     console.log(result.data);
-      //   })
-      //   .catch(function(err) {
-      //     console.log(err);
-      //   });
-    },
+
+      // document.cookie=`user={username=${user.username},password=${user.password}}`
+      // document.cookie='username='+user.username+';expires='+ 10;
+      // document.cookie='password='+user.password+';expires='+ 10;
+;
+      // document.cookie='username='+user.username+';expires='+ -1;
+
+      // document.cookie="user" + "=" + user + ";expires=" + 10;
+
+      // }
+    }
     // clearCookie: function() {
     //             this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
     //         }

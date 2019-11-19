@@ -1,20 +1,22 @@
 <template>
   <div id="wrap">
 
+    <keep-alive>
     <div id="content">
       <div>
         <i>*</i>
-        <el-date-picker v-model="value1" type="date" placeholder="合同开始日期" class="biankuang"></el-date-picker>
+        <el-date-picker ref="value1" v-model="value1" type="date" placeholder="合同开始日期" class="biankuang" v-on:blur="chooseBegin"></el-date-picker>
       </div>
       <div>
         <i>*</i>
-        <el-date-picker v-model="value2" type="date" placeholder="合同结束日期" class="biankuang"></el-date-picker>
+        <el-date-picker ref="value2" v-model="value2" type="date" placeholder="合同结束日期" class="biankuang" v-on:blur="chooseEnd"></el-date-picker>
       </div>
       <div>
         <i>*</i>
         <p class="noneborder">租房合同</p>
       </div>
     </div>
+    </keep-alive>
     <div id="pic">
         <ul>
             <li>+</li>
@@ -35,7 +37,15 @@ export default {
       value1: "",
       value2: ""
     };
-  }
+  },
+  methods: {
+    chooseBegin(){
+      this.$store.dispatch('getBegin',this.$refs.value1.value)
+    },
+    chooseEnd(){
+      this.$store.dispatch('getEnd',this.$refs.value2.value)
+    }
+  },
 };
 </script>
 <style scoped>
