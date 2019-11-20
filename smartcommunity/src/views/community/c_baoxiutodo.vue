@@ -22,7 +22,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      todolist: [],
+      todolist: []
     };
   },
   mounted() {
@@ -47,11 +47,13 @@ export default {
     //       "http://img.mp.itc.cn/upload/20160915/8c5dd22ea21948e7b6af97c4de2273e4_th.png"
     //   }
     // ];
-    let uid=localStorage.getItem('uid')
-    axios.get("repDet/getStatus?" + `rdStatus=待处理&uid=${uid}`).then(result => {
-      this.todolist = result.data.data;
-      console.log(this.todolist);
-    });
+    let uid = Number(localStorage.getItem("uid"));
+    axios
+      .get("repDet/getStatus?" + `rdStatus=待处理&uid=${uid}`)
+      .then(result => {
+        this.todolist = result.data.data;
+        console.log(this.todolist);
+      });
   },
   methods: {
     goDetail(baoxiuId) {
@@ -76,7 +78,7 @@ export default {
       this.$dialog.confirm({ message: "确认撤销报修" }).then(() => {
         axios.get("repDet/del/" + id).then(result => {
           console.log(result.data.success);
-          history.go(0)
+          history.go(0);
         });
       });
     }

@@ -122,6 +122,7 @@ export default {
       }
     },
     senddata() {
+          let uid = Number(localStorage.getItem("uid"));
       if (this.$refs.neirong.value != "" && this.selecttype.name != "") {
         console.log({
           type: this.selecttype.name,
@@ -134,7 +135,7 @@ export default {
           // comPerson: this.$refs.people.innerHTML,
           comDesc: this.$refs.neirong.value,
           pId: this.$store.state.peopleid,
-          uid: "1"
+          uid: uid
         };
 
         axios

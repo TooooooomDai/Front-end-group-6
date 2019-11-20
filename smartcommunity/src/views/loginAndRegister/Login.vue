@@ -66,7 +66,6 @@ export default {
       };
       // this.$store.state.guardflag = false;
       // localStorage.setItem("uid", 1);
-      this.$router.push("/community");
       axios
         .post(
           `/loginup?username=${this.$refs.user.value}&password=${this.$refs.psw.value}`
@@ -76,7 +75,9 @@ export default {
             this.$store.state.guardflag = false;
             // console.log(1231)
             // console.log(this.$store.state.loudongnum.split('幢').join()[0])
-            localStorage.setItem("uid", result.data.uid);
+            console.log(result.data.data.uid)
+            localStorage.setItem("uid",result.data.data.uid);
+            this.$router.push("/community");
             this.$notify({
               message: "登录成功",
               type: "success"
