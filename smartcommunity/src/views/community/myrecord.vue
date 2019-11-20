@@ -31,13 +31,13 @@
               </div>
               <div class="recordpic">
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg"  alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
               </div>
               <div class="recordinform">
@@ -61,13 +61,13 @@
               </div>
               <div class="recordpic">
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg"  alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/cat.jpeg" alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
               </div>
               <div class="recordinform">
@@ -91,13 +91,13 @@
               </div>
               <div class="recordpic">
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg"  alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
               </div>
               <div class="recordinform">
@@ -121,13 +121,13 @@
               </div>
               <div class="recordpic">
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg"  alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
                 <div>
-                  <img src alt /> 
+                  <img src="https://img.yzcdn.cn/vant/leaf.jpg" alt /> 
                 </div>
               </div>
               <div class="recordinform">
@@ -159,8 +159,9 @@ export default {
     };
   },
   mounted() {
+              let uid = Number(localStorage.getItem("uid"));
     //http://10.31.163.30:9081/complain/selectCom/{uid}
-      axios.get('complain/selectCom/1').then(result=>{
+      axios.get(`complain/selectCom/${uid}`).then(result=>{
         // console.log(result)
         this.datalists=result.data.data
       })
@@ -286,11 +287,11 @@ export default {
   height: 1.5rem;
   margin-left: 0.7rem;
   margin-top: 0.2rem;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .recordpic img {
-  width: 1rem;
-  height: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 .recordinform {
   display: flex;

@@ -17,9 +17,9 @@
                         </span>
                     </div>
                     <div class="replypic">
-                        <div><img src="" alt=""> 1</div>
-                        <div><img src="" alt=""> 2</div>
-                        <div><img src="" alt=""> 3</div>
+                        <div><img src="https://img.yzcdn.cn/vant/cat.jpeg" alt=""> 1</div>
+                        <div><img src="https://img.yzcdn.cn/vant/cat.jpeg" alt=""> 2</div>
+                        <div><img src="https://img.yzcdn.cn/vant/cat.jpeg" alt=""> 3</div>
                     </div>
                     <div class="replyinform">
                         <div>
@@ -130,7 +130,7 @@ export default {
         height: 1rem;
         margin-left: 0.7rem;
         margin-top: 0.2rem;
-        border: 1px solid red;
+        /* border: 1px solid red; */
     }
     .replypic img{
         width: 1rem;

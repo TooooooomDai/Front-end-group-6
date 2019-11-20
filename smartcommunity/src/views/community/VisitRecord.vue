@@ -29,12 +29,15 @@ import axios from 'axios'
 export default {  
   data() {
     return {
-      recordlists:[]
+      recordlists:[],
+       username : localStorage.getItem("username")
     }
   },
   mounted() {
+    
     // http://10.31.163.52:9081/user/record
-    axios.post('/user/record?username=小王').then(result=>{
+    axios.post(`/user/record?username=小王`).then(result=>{
+    // axios.post(`/user/record?username=${this.username}`).then(result=>{
       // console.log(result)
       this.recordlists=result.data.data
       // console.log(this.recordlists)

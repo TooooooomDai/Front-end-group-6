@@ -77,6 +77,7 @@ export default {
             // console.log(this.$store.state.loudongnum.split('幢').join()[0])
             console.log(result.data.data.uid)
             localStorage.setItem("uid",result.data.data.uid);
+            localStorage.setItem("username",result.data.data.username);
             this.$router.push("/community");
             this.$notify({
               message: "登录成功",
