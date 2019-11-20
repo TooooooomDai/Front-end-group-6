@@ -64,14 +64,16 @@ export default {
         in_time: this.$refs.user.value,
         password: this.$refs.psw.value
       };
-      this.$store.state.guardflag = false;
-      this.$router.push('/community')
+      // this.$store.state.guardflag = false;
+      // localStorage.setItem("uid", 1);
+      this.$router.push("/community");
       axios
         .post(
           `/loginup?username=${this.$refs.user.value}&password=${this.$refs.psw.value}`
         )
         .then(result => {
           if (result.data) {
+            this.$store.state.guardflag = false;
             // console.log(1231)
             // console.log(this.$store.state.loudongnum.split('幢').join()[0])
             localStorage.setItem("uid", result.data.uid);
@@ -87,11 +89,9 @@ export default {
           }
         });
 
-
       // document.cookie=`user={username=${user.username},password=${user.password}}`
       // document.cookie='username='+user.username+';expires='+ 10;
       // document.cookie='password='+user.password+';expires='+ 10;
-;
       // document.cookie='username='+user.username+';expires='+ -1;
 
       // document.cookie="user" + "=" + user + ";expires=" + 10;

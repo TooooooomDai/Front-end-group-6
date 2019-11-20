@@ -41,8 +41,7 @@ export default {
   async mounted() {
     this.uid = localStorage.getItem('uid')
     this.username = this.$route.query.name;
-    await axios.get(
-  `car/selectMyCar/${this.uid}`).then(result => {
+    await axios.get(`car/selectMyCar/${this.uid}`).then(result => {
       console.log(result.data.data);
       this.carList = result.data.data;
     });
